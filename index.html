@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="EliteStore - Premium gadgets, gaming accessories and technology products."
+  >
+
+  <title>EliteStore - Premium Tech Shopping</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="home-page">
+
+  <a class="skip-link" href="#productsArea">
+    Skip to products
+  </a>
+
+  <!-- ================= HEADER ================= -->
+
+  <header class="home-header">
+
+    <a
+      href="index.html"
+      class="home-logo"
+      aria-label="EliteStore home"
+    >
+      Elite<span>Store</span>
+    </a>
+
+    <div class="header-search">
+
+      <input
+        type="search"
+        id="searchInput"
+        placeholder="Search earbuds, keyboards, watches..."
+        aria-label="Search products"
+        oninput="searchProducts()"
+      >
+
+      <span
+        class="search-icon"
+        aria-hidden="true"
+      >
+        🔍
+      </span>
+
+    </div>
+
+    <button
+      type="button"
+      class="mobile-menu-button"
+      id="mobileMenuButton"
+      onclick="toggleMobileMenu()"
+      aria-label="Open navigation menu"
+      aria-controls="homeNav"
+      aria-expanded="false"
+    >
+      ☰
+    </button>
+
+    <nav
+      class="home-nav"
+      id="homeNav"
+      aria-label="Main navigation"
+    >
+
+      <!-- Login / Logout -->
+
+      <button
+        type="button"
+        class="home-nav-button"
+        id="accountButton"
+        data-auth-button
+        aria-label="Login or logout"
+      >
+        👤 Login
+      </button>
+
+      <!-- Wishlist -->
+
+      <a
+        href="wishlist.html"
+        class="home-nav-button"
+      >
+        <span>♥</span>
+
+        Wishlist
+
+        <span
+          class="header-count"
+          id="wishlist-count"
+        >
+          0
+        </span>
+      </a>
+
+      <!-- My Orders -->
+
+      <button
+        type="button"
+        class="home-nav-button"
+        onclick="openMyOrders()"
+        aria-label="View my orders"
+      >
+        <span>📦</span>
+        My Orders
+      </button>
+
+      <!-- Cart -->
+
+      <a
+        href="cart.html"
+        class="home-nav-button cart-header-button"
+        aria-label="Open shopping cart page"
+      >
+        <span>🛒</span>
+
+        Cart
+
+        <span
+          class="header-count"
+          id="cart-count"
+        >
+          0
+        </span>
+      </a>
+
+    </nav>
+
+  </header>
+
+  <main>
+
+    <!-- ================= HERO SLIDER ================= -->
+
+    <section
+      class="hero-slider"
+      aria-label="Promotional offers"
+    >
+
+      <!-- Mobile Slide -->
+
+      <article class="slide slide-one active">
+
+        <img
+          class="slide-bg"
+          src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=1800&h=900&fit=crop&auto=format&q=85"
+          alt="Latest smartphone collection banner"
+        >
+
+        <div class="slide-inner">
+
+          <div class="slide-content">
+
+            <span class="slide-label">
+              Latest Smartphones
+            </span>
+
+            <h1>
+              Power Meets
+              <span>Modern Style</span>
+            </h1>
+
+            <p>
+              Explore stylish smartphones and essential mobile accessories
+              with powerful performance and exciting deals.
+            </p>
+
+            <div class="hero-actions">
+
+              <button
+                type="button"
+                class="hero-primary-button"
+                onclick="selectCategory('mobile')"
+              >
+                Shop Smartphones
+              </button>
+
+              <button
+                type="button"
+                class="hero-secondary-button"
+                onclick="scrollToProducts()"
+              >
+                View Products
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </article>
+
+      <!-- Gaming Slide -->
+
+      <article class="slide slide-two">
+
+        <img
+          class="slide-bg"
+          src="https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=1800&h=900&fit=crop&auto=format&q=85"
+          alt="Gaming accessories banner"
+        >
+
+        <div class="slide-inner">
+
+          <div class="slide-content">
+
+            <span class="slide-label">
+              Gaming Collection
+            </span>
+
+            <h1>
+              Build Your
+              <span>Ultimate Gaming Setup</span>
+            </h1>
+
+            <p>
+              Shop mechanical keyboards, gaming mice and powerful accessories
+              created for serious gamers.
+            </p>
+
+            <div class="hero-actions">
+
+              <button
+                type="button"
+                class="hero-primary-button"
+                onclick="selectCategory('gaming')"
+              >
+                Shop Gaming
+              </button>
+
+              <button
+                type="button"
+                class="hero-secondary-button"
+                onclick="scrollToProducts()"
+              >
+                Explore Deals
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </article>
+
+      <!-- Technology Slide -->
+
+      <article class="slide slide-three">
+
+        <img
+          class="slide-bg"
+          src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1800&h=900&fit=crop&auto=format&q=85"
+          alt="Smart technology banner"
+        >
+
+        <div class="slide-inner">
+
+          <div class="slide-content">
+
+            <span class="slide-label">
+              Smart Technology
+            </span>
+
+            <h1>
+              Smarter Gadgets,
+              <span>Better Lifestyle</span>
+            </h1>
+
+            <p>
+              Explore smart watches, Bluetooth speakers and modern technology
+              products designed for your daily lifestyle.
+            </p>
+
+            <div class="hero-actions">
+
+              <button
+                type="button"
+                class="hero-primary-button"
+                onclick="selectCategory('tech')"
+              >
+                Shop Technology
+              </button>
+
+              <button
+                type="button"
+                class="hero-secondary-button"
+                onclick="scrollToProducts()"
+              >
+                View Collection
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </article>
+
+      <!-- Slider Buttons -->
+
+      <button
+        type="button"
+        class="slider-btn prev"
+        onclick="prevSlide()"
+        aria-label="Previous slide"
+      >
+        ❮
+      </button>
+
+      <button
+        type="button"
+        class="slider-btn next"
+        onclick="nextSlide()"
+        aria-label="Next slide"
+      >
+        ❯
+      </button>
+
+      <!-- Slider Dots -->
+
+      <div class="slider-dots">
+
+        <button
+          type="button"
+          class="dot active"
+          onclick="showSlide(0)"
+          aria-label="Open mobile slide"
+        ></button>
+
+        <button
+          type="button"
+          class="dot"
+          onclick="showSlide(1)"
+          aria-label="Open gaming slide"
+        ></button>
+
+        <button
+          type="button"
+          class="dot"
+          onclick="showSlide(2)"
+          aria-label="Open technology slide"
+        ></button>
+
+      </div>
+
+    </section>
+
+    <!-- ================= TRUST FEATURES ================= -->
+
+    <section class="trust-section">
+
+      <div class="trust-grid">
+
+        <div class="trust-item">
+
+          <div class="trust-icon">
+            🚚
+          </div>
+
+          <div>
+            <strong>Free Delivery</strong>
+            <span>On eligible products</span>
+          </div>
+
+        </div>
+
+        <div class="trust-item">
+
+          <div class="trust-icon">
+            🔒
+          </div>
+
+          <div>
+            <strong>Secure Checkout</strong>
+            <span>Safe shopping experience</span>
+          </div>
+
+        </div>
+
+        <div class="trust-item">
+
+          <div class="trust-icon">
+            ↻
+          </div>
+
+          <div>
+            <strong>Easy Replacement</strong>
+            <span>7-day replacement support</span>
+          </div>
+
+        </div>
+
+        <div class="trust-item">
+
+          <div class="trust-icon">
+            ✓
+          </div>
+
+          <div>
+            <strong>Quality Products</strong>
+            <span>Trusted Elite collection</span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ================= PRODUCTS ================= -->
+
+    <section
+      class="products-section"
+      id="productsArea"
+    >
+
+      <div class="products-wrapper">
+
+        <div class="section-header">
+
+          <span class="section-label">
+            Shop Our Collection
+          </span>
+
+          <h2>Our Products</h2>
+
+          <p>
+            Discover carefully selected gadgets, mobile accessories and
+            gaming products for your modern lifestyle.
+          </p>
+
+        </div>
+
+        <div class="category-buttons">
+
+          <button
+            type="button"
+            class="category-button active"
+            data-category="all"
+            onclick="selectCategory('all')"
+          >
+            All Products
+          </button>
+
+          <button
+            type="button"
+            class="category-button"
+            data-category="mobile"
+            onclick="selectCategory('mobile')"
+          >
+            Mobile
+          </button>
+
+          <button
+            type="button"
+            class="category-button"
+            data-category="gaming"
+            onclick="selectCategory('gaming')"
+          >
+            Gaming
+          </button>
+
+          <button
+            type="button"
+            class="category-button"
+            data-category="tech"
+            onclick="selectCategory('tech')"
+          >
+            Technology
+          </button>
+
+        </div>
+
+        <div
+          class="products"
+          id="productList"
+          aria-live="polite"
+        ></div>
+
+      </div>
+
+    </section>
+
+    <!-- ================= PROMO ================= -->
+
+    <section class="promo-section">
+
+      <div class="promo-box">
+
+        <div class="promo-content">
+
+          <span>
+            Elite Member Offer
+          </span>
+
+          <h2>
+            Save your favourite products in your wishlist
+          </h2>
+
+          <p>
+            Create an account, save products you love and access your cart,
+            wishlist and orders anytime.
+          </p>
+
+        </div>
+
+        <button
+          type="button"
+          class="promo-button"
+          onclick="window.location.href='signup.html'"
+        >
+          Create Account
+        </button>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+
+  <footer class="home-footer">
+
+    <div class="footer-grid">
+
+      <div class="footer-brand">
+
+        <h2>
+          Elite<span>Store</span>
+        </h2>
+
+        <p>
+          Premium gadgets, gaming accessories and smart technology products
+          in one modern shopping experience.
+        </p>
+
+      </div>
+
+      <div class="footer-column">
+
+        <h3>Shopping</h3>
+
+        <a href="#productsArea">
+          All Products
+        </a>
+
+        <a href="wishlist.html">
+          My Wishlist
+        </a>
+
+        <a href="cart.html">
+          🛒 Cart
+
+          <span
+            class="nav-count"
+            id="cartNavCount"
+          >
+            0
+          </span>
+        </a>
+
+      </div>
+
+      <div class="footer-column">
+
+        <h3>Account</h3>
+
+        <a href="login.html">
+          Login
+        </a>
+
+        <a href="signup.html">
+          Create Account
+        </a>
+
+        <a
+          href="my_orders.html"
+          onclick="event.preventDefault(); openMyOrders();"
+        >
+          My Orders
+        </a>
+
+        <a href="track_order.html">
+          Track Order
+        </a>
+
+        <a href="admin.html">
+          Admin Panel
+        </a>
+
+      </div>
+
+      <div class="footer-column">
+
+        <h3>Categories</h3>
+
+        <a
+          href="#productsArea"
+          onclick="selectCategory('mobile')"
+        >
+          Mobile
+        </a>
+
+        <a
+          href="#productsArea"
+          onclick="selectCategory('gaming')"
+        >
+          Gaming
+        </a>
+
+        <a
+          href="#productsArea"
+          onclick="selectCategory('tech')"
+        >
+          Technology
+        </a>
+
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      © <span id="currentYear"></span>
+      EliteStore. Frontend demo project.
+    </div>
+
+  </footer>
+
+  <!-- Main JavaScript -->
+
+  <script src="script.js"></script>
+
+  <script>
+    "use strict";
+
+    /* ==================================================
+       STORAGE
+    ================================================== */
+
+    function loadStorageArray(key) {
+      try {
+        const savedData = JSON.parse(
+          localStorage.getItem(key)
+        );
+
+        return Array.isArray(savedData)
+          ? savedData
+          : [];
+      } catch (error) {
+        console.error(
+          `Unable to read ${key}:`,
+          error
+        );
+
+        return [];
+      }
+    }
+
+
+    /* ==================================================
+       HEADER COUNTERS
+    ================================================== */
+
+    function updateHomeCounters() {
+      const savedCart =
+        loadStorageArray("cart");
+
+      const savedWishlist =
+        loadStorageArray("wishlist");
+
+      const cartQuantity =
+        savedCart.reduce(
+          (total, item) => {
+            if (
+              item &&
+              typeof item === "object"
+            ) {
+              const quantity =
+                Number(
+                  item.qty ??
+                  item.quantity ??
+                  1
+                );
+
+              return (
+                total +
+                Math.max(
+                  1,
+                  quantity || 1
+                )
+              );
+            }
+
+            return total + 1;
+          },
+          0
+        );
+
+      const cartCount =
+        document.getElementById(
+          "cart-count"
+        );
+
+      const cartNavCount =
+        document.getElementById(
+          "cartNavCount"
+        );
+
+      const wishlistCount =
+        document.getElementById(
+          "wishlist-count"
+        );
+
+      if (cartCount) {
+        cartCount.textContent =
+          cartQuantity;
+      }
+
+      if (cartNavCount) {
+        cartNavCount.textContent =
+          cartQuantity;
+      }
+
+      if (wishlistCount) {
+        wishlistCount.textContent =
+          savedWishlist.length;
+      }
+    }
+
+
+    /* ==================================================
+       MOBILE MENU
+    ================================================== */
+
+    function toggleMobileMenu() {
+      const navigation =
+        document.getElementById(
+          "homeNav"
+        );
+
+      const menuButton =
+        document.getElementById(
+          "mobileMenuButton"
+        );
+
+      if (
+        !navigation ||
+        !menuButton
+      ) {
+        return;
+      }
+
+      navigation.classList.toggle(
+        "active"
+      );
+
+      const menuIsOpen =
+        navigation.classList.contains(
+          "active"
+        );
+
+      menuButton.textContent =
+        menuIsOpen
+          ? "✕"
+          : "☰";
+
+      menuButton.setAttribute(
+        "aria-expanded",
+        String(menuIsOpen)
+      );
+
+      menuButton.setAttribute(
+        "aria-label",
+        menuIsOpen
+          ? "Close navigation menu"
+          : "Open navigation menu"
+      );
+    }
+
+    function closeMobileMenu() {
+      const navigation =
+        document.getElementById(
+          "homeNav"
+        );
+
+      const menuButton =
+        document.getElementById(
+          "mobileMenuButton"
+        );
+
+      if (
+        !navigation ||
+        !menuButton
+      ) {
+        return;
+      }
+
+      navigation.classList.remove(
+        "active"
+      );
+
+      menuButton.textContent =
+        "☰";
+
+      menuButton.setAttribute(
+        "aria-expanded",
+        "false"
+      );
+
+      menuButton.setAttribute(
+        "aria-label",
+        "Open navigation menu"
+      );
+    }
+
+
+    /* ==================================================
+       PRODUCT SECTION
+    ================================================== */
+
+    function scrollToProducts() {
+      const productsArea =
+        document.getElementById(
+          "productsArea"
+        );
+
+      if (!productsArea) {
+        return;
+      }
+
+      productsArea.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+
+    function selectCategory(category) {
+      if (
+        typeof filterProducts ===
+        "function"
+      ) {
+        filterProducts(category);
+      }
+
+      document
+        .querySelectorAll(
+          ".category-button"
+        )
+        .forEach(button => {
+          button.classList.toggle(
+            "active",
+            button.dataset.category ===
+              category
+          );
+        });
+
+      scrollToProducts();
+    }
+
+
+    /* ==================================================
+       PAGE EVENTS
+    ================================================== */
+
+    document.addEventListener(
+      "keydown",
+      event => {
+        if (
+          event.key ===
+          "Escape"
+        ) {
+          closeMobileMenu();
+        }
+      }
+    );
+
+    document.addEventListener(
+      "click",
+      event => {
+        const navigation =
+          document.getElementById(
+            "homeNav"
+          );
+
+        const menuButton =
+          document.getElementById(
+            "mobileMenuButton"
+          );
+
+        if (
+          !navigation ||
+          !menuButton
+        ) {
+          return;
+        }
+
+        if (
+          window.innerWidth <= 800 &&
+          navigation.classList.contains(
+            "active"
+          ) &&
+          !navigation.contains(
+            event.target
+          ) &&
+          !menuButton.contains(
+            event.target
+          )
+        ) {
+          closeMobileMenu();
+        }
+      }
+    );
+
+    document
+      .querySelectorAll(
+        "#homeNav a, #homeNav button"
+      )
+      .forEach(item => {
+        item.addEventListener(
+          "click",
+          () => {
+            if (
+              window.innerWidth <=
+              800
+            ) {
+              closeMobileMenu();
+            }
+          }
+        );
+      });
+
+    window.addEventListener(
+      "resize",
+      () => {
+        if (
+          window.innerWidth >
+          800
+        ) {
+          closeMobileMenu();
+        }
+      }
+    );
+
+    window.addEventListener(
+      "storage",
+      () => {
+        updateHomeCounters();
+
+        if (
+          typeof updateAuthUI ===
+          "function"
+        ) {
+          updateAuthUI();
+        }
+      }
+    );
+
+
+    /* ==================================================
+       CURRENT YEAR
+    ================================================== */
+
+    const currentYearElement =
+      document.getElementById(
+        "currentYear"
+      );
+
+    if (currentYearElement) {
+      currentYearElement.textContent =
+        new Date().getFullYear();
+    }
+
+
+    /* ==================================================
+       INITIALIZATION
+    ================================================== */
+
+    updateHomeCounters();
+
+    if (
+      typeof updateAuthUI ===
+      "function"
+    ) {
+      updateAuthUI();
+    }
+  </script>
+
+</body>
+
+</html>

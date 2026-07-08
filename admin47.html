@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Admin Panel - EliteStore</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    :root {
+      --admin-dark: #111827;
+      --admin-dark-light: #1f2937;
+      --admin-yellow: #fbbf24;
+      --admin-yellow-dark: #f59e0b;
+      --admin-bg: #f4f6f8;
+      --admin-border: #e5e7eb;
+      --admin-muted: #6b7280;
+      --admin-green: #16a34a;
+      --admin-red: #dc2626;
+      --admin-blue: #2563eb;
+    }
+
+    body {
+      background: var(--admin-bg);
+    }
+
+    .admin-layout {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 250px minmax(0, 1fr);
+    }
+
+    .admin-sidebar {
+      min-height: 100vh;
+      padding: 25px 18px;
+      position: sticky;
+      top: 0;
+      align-self: start;
+      background: var(--admin-dark);
+      color: #ffffff;
+    }
+
+    .admin-logo {
+      margin-bottom: 32px;
+      padding: 0 10px;
+      font-size: 27px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      cursor: pointer;
+    }
+
+    .admin-logo span {
+      color: var(--admin-yellow);
+    }
+
+    .admin-label {
+      margin: 0 10px 10px;
+      color: #9ca3af;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .admin-menu {
+      display: grid;
+      gap: 8px;
+    }
+
+    .admin-menu-button {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid transparent;
+      border-radius: 11px;
+      background: transparent;
+      color: #d1d5db;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      text-align: left;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+
+    .admin-menu-button:hover,
+    .admin-menu-button.active {
+      border-color: rgba(251, 191, 36, 0.25);
+      background: rgba(251, 191, 36, 0.12);
+      color: var(--admin-yellow);
+    }
+
+    .admin-store-link {
+      margin-top: 25px;
+      padding: 13px 14px;
+      border-radius: 11px;
+      background: var(--admin-yellow);
+      color: var(--admin-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .admin-main {
+      min-width: 0;
+      padding: 30px;
+    }
+
+    .admin-topbar {
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .admin-topbar h1 {
+      margin-bottom: 6px;
+      color: var(--admin-dark);
+      font-size: 34px;
+    }
+
+    .admin-topbar p {
+      color: var(--admin-muted);
+      font-size: 14px;
+    }
+
+    .admin-date {
+      padding: 11px 16px;
+      border: 1px solid var(--admin-border);
+      border-radius: 10px;
+      background: #ffffff;
+      color: #374151;
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .admin-page {
+      display: none;
+    }
+
+    .admin-page.active {
+      display: block;
+    }
+
+    .stats-grid {
+      margin-bottom: 27px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .stat-card {
+      padding: 22px;
+      border: 1px solid var(--admin-border);
+      border-radius: 17px;
+      background: #ffffff;
+      box-shadow: 0 8px 25px rgba(17, 24, 39, 0.07);
+    }
+
+    .stat-icon {
+      width: 44px;
+      height: 44px;
+      margin-bottom: 17px;
+      border-radius: 12px;
+      background: #fef3c7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 21px;
+    }
+
+    .stat-card span {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--admin-muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .stat-card strong {
+      color: var(--admin-dark);
+      font-size: 28px;
+    }
+
+    .admin-card {
+      padding: 24px;
+      border: 1px solid var(--admin-border);
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 8px 27px rgba(17, 24, 39, 0.06);
+    }
+
+    .admin-card + .admin-card {
+      margin-top: 22px;
+    }
+
+    .admin-card-header {
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .admin-card-header h2 {
+      color: var(--admin-dark);
+      font-size: 22px;
+    }
+
+    .admin-card-header p {
+      margin-top: 5px;
+      color: var(--admin-muted);
+      font-size: 13px;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .recent-order {
+      padding: 15px 0;
+      border-bottom: 1px solid var(--admin-border);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .recent-order:last-child {
+      border-bottom: none;
+    }
+
+    .recent-order strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--admin-dark);
+      font-size: 14px;
+    }
+
+    .recent-order p {
+      color: var(--admin-muted);
+      font-size: 12px;
+    }
+
+    .recent-order-total {
+      color: var(--admin-green);
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .status-list {
+      display: grid;
+      gap: 13px;
+    }
+
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      color: #4b5563;
+      font-size: 14px;
+    }
+
+    .status-row strong {
+      color: var(--admin-dark);
+    }
+
+    .admin-toolbar {
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .admin-search {
+      width: min(360px, 100%);
+      padding: 12px 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      background: #ffffff;
+      outline: none;
+    }
+
+    .admin-search:focus {
+      border-color: var(--admin-yellow-dark);
+      box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.12);
+    }
+
+    .primary-admin-button,
+    .secondary-admin-button,
+    .danger-admin-button {
+      min-height: 43px;
+      padding: 11px 17px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+
+    .primary-admin-button {
+      border: none;
+      background: linear-gradient(135deg, var(--admin-yellow), var(--admin-yellow-dark));
+      color: var(--admin-dark);
+    }
+
+    .secondary-admin-button {
+      border: 1px solid var(--admin-dark);
+      background: #ffffff;
+      color: var(--admin-dark);
+    }
+
+    .danger-admin-button {
+      border: none;
+      background: #fee2e2;
+      color: var(--admin-red);
+    }
+
+    .primary-admin-button:hover,
+    .secondary-admin-button:hover,
+    .danger-admin-button:hover {
+      transform: translateY(-2px);
+    }
+
+    .product-form {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 17px;
+    }
+
+    .admin-field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .admin-field.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .admin-field label {
+      color: #374151;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .admin-field input,
+    .admin-field select,
+    .admin-field textarea {
+      width: 100%;
+      padding: 12px 13px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      background: #ffffff;
+      color: var(--admin-dark);
+      outline: none;
+    }
+
+    .admin-field textarea {
+      min-height: 95px;
+      resize: vertical;
+    }
+
+    .admin-field input:focus,
+    .admin-field select:focus,
+    .admin-field textarea:focus {
+      border-color: var(--admin-yellow-dark);
+      box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
+    }
+
+    .form-actions {
+      grid-column: 1 / -1;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 800px;
+    }
+
+    .admin-table th,
+    .admin-table td {
+      padding: 14px 12px;
+      border-bottom: 1px solid var(--admin-border);
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    .admin-table th {
+      background: #f8fafc;
+      color: #4b5563;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .admin-table td {
+      color: #374151;
+      font-size: 13px;
+    }
+
+    .admin-product-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .admin-product-cell img {
+      width: 52px;
+      height: 52px;
+      padding: 4px;
+      border: 1px solid var(--admin-border);
+      border-radius: 9px;
+      background: #f8fafc;
+      object-fit: contain;
+    }
+
+    .admin-product-cell strong {
+      color: var(--admin-dark);
+    }
+
+    .table-action-buttons {
+      display: flex;
+      gap: 7px;
+    }
+
+    .edit-button,
+    .delete-button,
+    .track-button {
+      padding: 8px 11px;
+      border: none;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .edit-button {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .delete-button {
+      background: #fee2e2;
+      color: var(--admin-red);
+    }
+
+    .track-button {
+      background: #e0e7ff;
+      color: #4338ca;
+    }
+
+    .status-select {
+      padding: 9px 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      background: #ffffff;
+      color: var(--admin-dark);
+      font-size: 12px;
+      font-weight: 700;
+      outline: none;
+    }
+
+    .empty-admin-data {
+      padding: 45px 20px;
+      color: var(--admin-muted);
+      text-align: center;
+    }
+
+    .empty-admin-data div {
+      margin-bottom: 10px;
+      font-size: 45px;
+    }
+
+    .admin-toast {
+      position: fixed;
+      right: 25px;
+      bottom: 25px;
+      z-index: 3000;
+      max-width: 340px;
+      padding: 14px 18px;
+      border-radius: 11px;
+      background: var(--admin-dark);
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 800;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px);
+      transition: 0.3s;
+    }
+
+    .admin-toast.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .mobile-admin-menu {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border: none;
+      border-radius: 10px;
+      background: var(--admin-dark);
+      color: #ffffff;
+      font-size: 21px;
+    }
+
+    @media (max-width: 1100px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 800px) {
+      .admin-layout {
+        display: block;
+      }
+
+      .admin-sidebar {
+        width: min(290px, 86%);
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 2000;
+        transform: translateX(-105%);
+        transition: 0.3s;
+        box-shadow: 12px 0 35px rgba(0, 0, 0, 0.25);
+      }
+
+      .admin-sidebar.active {
+        transform: translateX(0);
+      }
+
+      .admin-main {
+        padding: 22px 4%;
+      }
+
+      .mobile-admin-menu {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .admin-topbar {
+        align-items: flex-start;
+      }
+
+      .admin-date {
+        display: none;
+      }
+
+      .product-form {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-field.full-width,
+      .form-actions {
+        grid-column: auto;
+      }
+    }
+
+    @media (max-width: 550px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-topbar h1 {
+        font-size: 28px;
+      }
+
+      .admin-card {
+        padding: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="admin-layout">
+
+    <aside class="admin-sidebar" id="adminSidebar">
+
+      <div class="admin-logo" onclick="window.location.href='index.html'">
+        Elite<span>Store</span>
+      </div>
+
+      <p class="admin-label">Admin Menu</p>
+
+      <nav class="admin-menu">
+
+        <button
+          type="button"
+          class="admin-menu-button active"
+          data-page="dashboardPage"
+          onclick="openAdminPage('dashboardPage', this)"
+        >
+          📊 Dashboard
+        </button>
+
+        <button
+          type="button"
+          class="admin-menu-button"
+          data-page="productsPage"
+          onclick="openAdminPage('productsPage', this)"
+        >
+          📦 Products
+        </button>
+
+        <button
+          type="button"
+          class="admin-menu-button"
+          data-page="ordersPage"
+          onclick="openAdminPage('ordersPage', this)"
+        >
+          🧾 Orders
+        </button>
+
+      </nav>
+
+      <a href="index.html" class="admin-store-link">
+        ← Open Store
+      </a>
+
+    </aside>
+
+    <main class="admin-main">
+
+      <div class="admin-topbar">
+
+        <div style="display: flex; align-items: flex-start; gap: 13px;">
+          <button
+            type="button"
+            class="mobile-admin-menu"
+            onclick="toggleAdminSidebar()"
+            aria-label="Open admin menu"
+          >
+            ☰
+          </button>
+
+          <div>
+            <h1 id="adminPageTitle">Admin Dashboard</h1>
+            <p id="adminPageDescription">
+              Manage EliteStore products and customer orders.
+            </p>
+          </div>
+        </div>
+
+        <div class="admin-date" id="adminDate"></div>
+
+      </div>
+
+      <!-- Dashboard -->
+
+      <section class="admin-page active" id="dashboardPage">
+
+        <div class="stats-grid">
+
+          <article class="stat-card">
+            <div class="stat-icon">📦</div>
+            <span>Total Products</span>
+            <strong id="dashboardProductsCount">0</strong>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon">🧾</div>
+            <span>Total Orders</span>
+            <strong id="dashboardOrdersCount">0</strong>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon">💰</div>
+            <span>Total Revenue</span>
+            <strong>₹<span id="dashboardRevenue">0</span></strong>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon">⏳</div>
+            <span>Active Orders</span>
+            <strong id="dashboardActiveOrders">0</strong>
+          </article>
+
+        </div>
+
+        <div class="dashboard-grid">
+
+          <section class="admin-card">
+            <div class="admin-card-header">
+              <div>
+                <h2>Recent Orders</h2>
+                <p>Latest orders placed by customers.</p>
+              </div>
+            </div>
+
+            <div id="recentOrdersList"></div>
+          </section>
+
+          <aside class="admin-card">
+            <div class="admin-card-header">
+              <div>
+                <h2>Order Status</h2>
+                <p>Current status overview.</p>
+              </div>
+            </div>
+
+            <div class="status-list" id="orderStatusSummary"></div>
+          </aside>
+
+        </div>
+
+      </section>
+
+      <!-- Products -->
+
+      <section class="admin-page" id="productsPage">
+
+        <section class="admin-card">
+
+          <div class="admin-card-header">
+            <div>
+              <h2 id="productFormTitle">Add New Product</h2>
+              <p>Products saved here will appear on the store.</p>
+            </div>
+          </div>
+
+          <form class="product-form" id="adminProductForm">
+
+            <input type="hidden" id="editingProductId">
+
+            <div class="admin-field">
+              <label for="adminProductName">Product Name</label>
+              <input
+                type="text"
+                id="adminProductName"
+                placeholder="Example: Wireless Headphones"
+                required
+              >
+            </div>
+
+            <div class="admin-field">
+              <label for="adminProductCategory">Category</label>
+              <select id="adminProductCategory" required>
+                <option value="mobile">Mobile</option>
+                <option value="gaming">Gaming</option>
+                <option value="tech">Technology</option>
+              </select>
+            </div>
+
+            <div class="admin-field">
+              <label for="adminProductPrice">Selling Price</label>
+              <input
+                type="number"
+                id="adminProductPrice"
+                min="1"
+                placeholder="1499"
+                required
+              >
+            </div>
+
+            <div class="admin-field">
+              <label for="adminProductOldPrice">Old Price</label>
+              <input
+                type="number"
+                id="adminProductOldPrice"
+                min="1"
+                placeholder="1999"
+                required
+              >
+            </div>
+
+            <div class="admin-field">
+              <label for="adminProductStock">Stock</label>
+              <input
+                type="number"
+                id="adminProductStock"
+                min="0"
+                placeholder="10"
+                required
+              >
+            </div>
+
+            <div class="admin-field">
+              <label for="adminProductReviews">Demo Reviews Count</label>
+              <input
+                type="number"
+                id="adminProductReviews"
+                min="0"
+                value="0"
+              >
+            </div>
+
+            <div class="admin-field full-width">
+              <label for="adminProductImage">Image URL</label>
+              <input
+                type="url"
+                id="adminProductImage"
+                placeholder="https://example.com/product.jpg"
+                required
+              >
+            </div>
+
+            <div class="admin-field full-width">
+              <label for="adminProductDescription">Description</label>
+              <textarea
+                id="adminProductDescription"
+                placeholder="Write product description..."
+              ></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="primary-admin-button" id="saveProductButton">
+                Add Product
+              </button>
+
+              <button
+                type="button"
+                class="secondary-admin-button"
+                id="cancelEditButton"
+                onclick="resetProductForm()"
+                style="display: none;"
+              >
+                Cancel Edit
+              </button>
+            </div>
+
+          </form>
+
+        </section>
+
+        <section class="admin-card">
+
+          <div class="admin-card-header">
+            <div>
+              <h2>All Products</h2>
+              <p>Edit or remove products from your store.</p>
+            </div>
+          </div>
+
+          <div class="admin-toolbar">
+            <input
+              type="search"
+              class="admin-search"
+              id="productSearchInput"
+              placeholder="Search products..."
+              oninput="renderAdminProducts()"
+            >
+
+            <button
+              type="button"
+              class="danger-admin-button"
+              onclick="resetDefaultProducts()"
+            >
+              Reset Default Products
+            </button>
+          </div>
+
+          <div class="table-wrapper" id="productsTableWrapper"></div>
+
+        </section>
+
+      </section>
+
+      <!-- Orders -->
+
+      <section class="admin-page" id="ordersPage">
+
+        <section class="admin-card">
+
+          <div class="admin-card-header">
+            <div>
+              <h2>Customer Orders</h2>
+              <p>Update order status to change customer tracking progress.</p>
+            </div>
+          </div>
+
+          <div class="admin-toolbar">
+            <input
+              type="search"
+              class="admin-search"
+              id="orderSearchInput"
+              placeholder="Search order ID or customer..."
+              oninput="renderAdminOrders()"
+            >
+          </div>
+
+          <div class="table-wrapper" id="ordersTableWrapper"></div>
+
+        </section>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <div class="admin-toast" id="adminToast"></div>
+
+  <script>
+    "use strict";
+
+    const ADMIN_PRODUCTS_KEY = "eliteProducts";
+    const ADMIN_ORDERS_KEY = "orders";
+    const FALLBACK_IMAGE = "./Website-images/no-image.png";
+
+    const DEFAULT_PRODUCTS = [
+      {
+        id: 1,
+        name: "Wireless Earbuds",
+        category: "mobile",
+        price: 1499,
+        oldPrice: 1999,
+        discount: 25,
+        reviews: 124,
+        stock: 12,
+        description: "Premium wireless earbuds with clear sound and comfortable fit.",
+        image: "https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?w=600&h=600&fit=crop"
+      },
+      {
+        id: 2,
+        name: "Gaming Keyboard",
+        category: "gaming",
+        price: 2499,
+        oldPrice: 3499,
+        discount: 29,
+        reviews: 98,
+        stock: 8,
+        description: "Mechanical gaming keyboard designed for fast and accurate gameplay.",
+        image: "https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=600&h=600&fit=crop"
+      },
+      {
+        id: 3,
+        name: "Fast Charger",
+        category: "mobile",
+        price: 799,
+        oldPrice: 1299,
+        discount: 38,
+        reviews: 210,
+        stock: 18,
+        description: "Compact fast charger for reliable everyday mobile charging.",
+        image: "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=600&h=600&fit=crop"
+      },
+      {
+        id: 4,
+        name: "Smart Watch",
+        category: "tech",
+        price: 2999,
+        oldPrice: 4499,
+        discount: 33,
+        reviews: 156,
+        stock: 10,
+        description: "Modern smart watch with activity tracking and daily notifications.",
+        image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=600&fit=crop"
+      },
+      {
+        id: 5,
+        name: "Gaming Mouse",
+        category: "gaming",
+        price: 1199,
+        oldPrice: 1799,
+        discount: 34,
+        reviews: 87,
+        stock: 15,
+        description: "Responsive gaming mouse with comfortable grip and accurate control.",
+        image: "https://images.unsplash.com/photo-1527814050087-3793815479db?w=600&h=600&fit=crop"
+      },
+      {
+        id: 6,
+        name: "JBL Bluetooth Speaker",
+        category: "tech",
+        price: 3499,
+        oldPrice: 4999,
+        discount: 30,
+        reviews: 142,
+        stock: 7,
+        description: "Portable Bluetooth speaker with powerful audio and modern design.",
+        image: "https://images.unsplash.com/photo-1545454675-3531b543be5d?w=600&h=600&fit=crop"
+      }
+    ];
+
+    let adminProducts = [];
+    let adminOrders = [];
+    let adminToastTimer = null;
+
+    function readStorageArray(key) {
+      try {
+        const value = JSON.parse(localStorage.getItem(key));
+        return Array.isArray(value) ? value : [];
+      } catch (error) {
+        console.error(`Unable to read ${key}:`, error);
+        return [];
+      }
+    }
+
+    function saveStorageArray(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function loadAdminProducts() {
+      const savedProducts = readStorageArray(ADMIN_PRODUCTS_KEY);
+
+      if (savedProducts.length === 0 && localStorage.getItem(ADMIN_PRODUCTS_KEY) === null) {
+        adminProducts = DEFAULT_PRODUCTS.map(product => ({ ...product }));
+        saveStorageArray(ADMIN_PRODUCTS_KEY, adminProducts);
+      } else {
+        adminProducts = savedProducts;
+      }
+
+      return adminProducts;
+    }
+
+    function loadAdminOrders() {
+      adminOrders = readStorageArray(ADMIN_ORDERS_KEY);
+      return adminOrders;
+    }
+
+    function formatAdminPrice(value) {
+      return Number(value || 0).toLocaleString("en-IN", {
+        maximumFractionDigits: 2
+      });
+    }
+
+    function escapeAdminHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function formatAdminDate(value) {
+      const date = new Date(value);
+
+      if (Number.isNaN(date.getTime())) {
+        return "Date unavailable";
+      }
+
+      return date.toLocaleString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+
+    function getOrderId(order, index = 0) {
+      return String(
+        order.orderId ||
+        order.order_id ||
+        order.id ||
+        `ELITE-ORDER-${index + 1}`
+      );
+    }
+
+    function getOrderTotal(order) {
+      const savedTotal = Number(
+        order.total ??
+        order.totalAmount ??
+        order.grandTotal
+      );
+
+      if (savedTotal >= 0) {
+        return savedTotal;
+      }
+
+      const items = Array.isArray(order.items)
+        ? order.items
+        : Array.isArray(order.products)
+          ? order.products
+          : [];
+
+      return items.reduce((total, item) => {
+        const quantity = Math.max(
+          1,
+          Number(item.qty ?? item.quantity) || 1
+        );
+
+        return total + (Number(item.price) || 0) * quantity;
+      }, 0);
+    }
+
+    function getCustomerName(order) {
+      return String(
+        order.customer?.fullName ||
+        order.customer?.name ||
+        order.customerName ||
+        order.fullName ||
+        "Customer"
+      );
+    }
+
+    function calculateDiscount(price, oldPrice) {
+      const sellingPrice = Number(price) || 0;
+      const originalPrice = Number(oldPrice) || 0;
+
+      if (originalPrice <= sellingPrice || originalPrice <= 0) {
+        return 0;
+      }
+
+      return Math.round(
+        ((originalPrice - sellingPrice) / originalPrice) * 100
+      );
+    }
+
+    function getNextProductId() {
+      const highestId = adminProducts.reduce(
+        (highest, product) => Math.max(highest, Number(product.id) || 0),
+        0
+      );
+
+      return highestId + 1;
+    }
+
+    function showAdminToast(message) {
+      const toast = document.getElementById("adminToast");
+
+      toast.textContent = message;
+      toast.classList.add("show");
+
+      clearTimeout(adminToastTimer);
+
+      adminToastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2500);
+    }
+
+    function openAdminPage(pageId, button) {
+      document.querySelectorAll(".admin-page").forEach(page => {
+        page.classList.toggle("active", page.id === pageId);
+      });
+
+      document.querySelectorAll(".admin-menu-button").forEach(menuButton => {
+        menuButton.classList.toggle("active", menuButton === button);
+      });
+
+      const pageSettings = {
+        dashboardPage: {
+          title: "Admin Dashboard",
+          description: "Manage EliteStore products and customer orders."
+        },
+        productsPage: {
+          title: "Product Management",
+          description: "Add, edit and remove products from your store."
+        },
+        ordersPage: {
+          title: "Order Management",
+          description: "Review orders and update delivery progress."
+        }
+      };
+
+      const setting = pageSettings[pageId] || pageSettings.dashboardPage;
+
+      document.getElementById("adminPageTitle").textContent = setting.title;
+      document.getElementById("adminPageDescription").textContent =
+        setting.description;
+
+      document.getElementById("adminSidebar").classList.remove("active");
+
+      if (pageId === "dashboardPage") {
+        renderAdminDashboard();
+      }
+
+      if (pageId === "productsPage") {
+        renderAdminProducts();
+      }
+
+      if (pageId === "ordersPage") {
+        renderAdminOrders();
+      }
+    }
+
+    function toggleAdminSidebar() {
+      document.getElementById("adminSidebar").classList.toggle("active");
+    }
+
+    function renderAdminDashboard() {
+      loadAdminProducts();
+      loadAdminOrders();
+
+      const revenue = adminOrders.reduce(
+        (total, order) => total + getOrderTotal(order),
+        0
+      );
+
+      const activeOrders = adminOrders.filter(order => {
+        const status = String(order.status || "Order Placed").toLowerCase();
+
+        return !status.includes("deliver") && !status.includes("cancel");
+      }).length;
+
+      document.getElementById("dashboardProductsCount").textContent =
+        adminProducts.length;
+
+      document.getElementById("dashboardOrdersCount").textContent =
+        adminOrders.length;
+
+      document.getElementById("dashboardRevenue").textContent =
+        formatAdminPrice(revenue);
+
+      document.getElementById("dashboardActiveOrders").textContent =
+        activeOrders;
+
+      renderRecentOrders();
+      renderOrderStatusSummary();
+    }
+
+    function renderRecentOrders() {
+      const recentOrdersList = document.getElementById("recentOrdersList");
+      const recentOrders = adminOrders.slice(0, 5);
+
+      if (recentOrders.length === 0) {
+        recentOrdersList.innerHTML = `
+          <div class="empty-admin-data">
+            <div>🧾</div>
+            <p>No orders have been placed yet.</p>
+          </div>
+        `;
+
+        return;
+      }
+
+      recentOrdersList.innerHTML = recentOrders
+        .map((order, index) => `
+          <article class="recent-order">
+            <div>
+              <strong>${escapeAdminHtml(getOrderId(order, index))}</strong>
+              <p>
+                ${escapeAdminHtml(getCustomerName(order))} ·
+                ${formatAdminDate(
+                  order.orderDate ||
+                  order.createdAt ||
+                  order.date
+                )}
+              </p>
+            </div>
+
+            <div class="recent-order-total">
+              ₹${formatAdminPrice(getOrderTotal(order))}
+            </div>
+          </article>
+        `)
+        .join("");
+    }
+
+    function renderOrderStatusSummary() {
+      const statuses = [
+        "Order Placed",
+        "Processing",
+        "Shipped",
+        "Out for Delivery",
+        "Delivered",
+        "Cancelled"
+      ];
+
+      document.getElementById("orderStatusSummary").innerHTML = statuses
+        .map(status => {
+          const count = adminOrders.filter(order =>
+            String(order.status || "Order Placed").toLowerCase() ===
+            status.toLowerCase()
+          ).length;
+
+          return `
+            <div class="status-row">
+              <span>${status}</span>
+              <strong>${count}</strong>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    function renderAdminProducts() {
+      loadAdminProducts();
+
+      const wrapper = document.getElementById("productsTableWrapper");
+      const searchText = document
+        .getElementById("productSearchInput")
+        .value
+        .trim()
+        .toLowerCase();
+
+      const filteredProducts = adminProducts.filter(product =>
+        `${product.name} ${product.category}`
+          .toLowerCase()
+          .includes(searchText)
+      );
+
+      if (filteredProducts.length === 0) {
+        wrapper.innerHTML = `
+          <div class="empty-admin-data">
+            <div>📦</div>
+            <p>No products found.</p>
+          </div>
+        `;
+
+        return;
+      }
+
+      wrapper.innerHTML = `
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Discount</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            ${filteredProducts.map(product => `
+              <tr>
+                <td>
+                  <div class="admin-product-cell">
+                    <img
+                      src="${escapeAdminHtml(product.image || FALLBACK_IMAGE)}"
+                      alt="${escapeAdminHtml(product.name)}"
+                      onerror="this.onerror=null; this.src='${FALLBACK_IMAGE}';"
+                    >
+
+                    <strong>${escapeAdminHtml(product.name)}</strong>
+                  </div>
+                </td>
+
+                <td>${escapeAdminHtml(product.category)}</td>
+                <td>₹${formatAdminPrice(product.price)}</td>
+                <td>${Number(product.stock) || 0}</td>
+                <td>${Number(product.discount) || 0}%</td>
+
+                <td>
+                  <div class="table-action-buttons">
+                    <button
+                      type="button"
+                      class="edit-button"
+                      onclick="editAdminProduct(${Number(product.id)})"
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      type="button"
+                      class="delete-button"
+                      onclick="deleteAdminProduct(${Number(product.id)})"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+
+    function saveAdminProduct(event) {
+      event.preventDefault();
+
+      loadAdminProducts();
+
+      const editingId = Number(
+        document.getElementById("editingProductId").value
+      );
+
+      const name = document
+        .getElementById("adminProductName")
+        .value
+        .trim();
+
+      const category = document.getElementById("adminProductCategory").value;
+      const price = Number(document.getElementById("adminProductPrice").value);
+      const oldPrice = Number(
+        document.getElementById("adminProductOldPrice").value
+      );
+      const stock = Number(document.getElementById("adminProductStock").value);
+      const reviews = Number(
+        document.getElementById("adminProductReviews").value
+      );
+      const image = document
+        .getElementById("adminProductImage")
+        .value
+        .trim();
+      const description = document
+        .getElementById("adminProductDescription")
+        .value
+        .trim();
+
+      if (!name || !image || price <= 0 || oldPrice <= 0 || stock < 0) {
+        showAdminToast("Please enter valid product details.");
+        return;
+      }
+
+      const productData = {
+        id: editingId || getNextProductId(),
+        name,
+        category,
+        price,
+        oldPrice,
+        discount: calculateDiscount(price, oldPrice),
+        reviews: Math.max(0, reviews || 0),
+        stock: Math.max(0, stock),
+        image,
+        description
+      };
+
+      if (editingId) {
+        const productIndex = adminProducts.findIndex(
+          product => Number(product.id) === editingId
+        );
+
+        if (productIndex !== -1) {
+          adminProducts[productIndex] = productData;
+        }
+
+        showAdminToast("Product updated successfully.");
+      } else {
+        adminProducts.push(productData);
+        showAdminToast("Product added successfully.");
+      }
+
+      saveStorageArray(ADMIN_PRODUCTS_KEY, adminProducts);
+      resetProductForm();
+      renderAdminProducts();
+      renderAdminDashboard();
+    }
+
+    function editAdminProduct(productId) {
+      loadAdminProducts();
+
+      const product = adminProducts.find(
+        item => Number(item.id) === Number(productId)
+      );
+
+      if (!product) {
+        return;
+      }
+
+      document.getElementById("editingProductId").value = product.id;
+      document.getElementById("adminProductName").value = product.name;
+      document.getElementById("adminProductCategory").value = product.category;
+      document.getElementById("adminProductPrice").value = product.price;
+      document.getElementById("adminProductOldPrice").value = product.oldPrice;
+      document.getElementById("adminProductStock").value = product.stock;
+      document.getElementById("adminProductReviews").value =
+        product.reviews || 0;
+      document.getElementById("adminProductImage").value = product.image;
+      document.getElementById("adminProductDescription").value =
+        product.description || "";
+
+      document.getElementById("productFormTitle").textContent = "Edit Product";
+      document.getElementById("saveProductButton").textContent =
+        "Update Product";
+      document.getElementById("cancelEditButton").style.display =
+        "inline-block";
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function deleteAdminProduct(productId) {
+      loadAdminProducts();
+
+      const product = adminProducts.find(
+        item => Number(item.id) === Number(productId)
+      );
+
+      if (!product) {
+        return;
+      }
+
+      const confirmed = confirm(
+        `Delete "${product.name}" from EliteStore?`
+      );
+
+      if (!confirmed) {
+        return;
+      }
+
+      adminProducts = adminProducts.filter(
+        item => Number(item.id) !== Number(productId)
+      );
+
+      saveStorageArray(ADMIN_PRODUCTS_KEY, adminProducts);
+      renderAdminProducts();
+      renderAdminDashboard();
+      showAdminToast("Product deleted.");
+    }
+
+    function resetProductForm() {
+      document.getElementById("adminProductForm").reset();
+      document.getElementById("editingProductId").value = "";
+      document.getElementById("adminProductReviews").value = "0";
+      document.getElementById("productFormTitle").textContent =
+        "Add New Product";
+      document.getElementById("saveProductButton").textContent =
+        "Add Product";
+      document.getElementById("cancelEditButton").style.display = "none";
+    }
+
+    function resetDefaultProducts() {
+      const confirmed = confirm(
+        "Reset products to the original EliteStore collection?"
+      );
+
+      if (!confirmed) {
+        return;
+      }
+
+      adminProducts = DEFAULT_PRODUCTS.map(product => ({ ...product }));
+      saveStorageArray(ADMIN_PRODUCTS_KEY, adminProducts);
+      resetProductForm();
+      renderAdminProducts();
+      renderAdminDashboard();
+      showAdminToast("Default products restored.");
+    }
+
+    function renderAdminOrders() {
+      loadAdminOrders();
+
+      const wrapper = document.getElementById("ordersTableWrapper");
+      const searchText = document
+        .getElementById("orderSearchInput")
+        .value
+        .trim()
+        .toLowerCase();
+
+      const filteredOrders = adminOrders.filter((order, index) => {
+        const searchableText =
+          `${getOrderId(order, index)} ${getCustomerName(order)} ${order.status || ""}`
+            .toLowerCase();
+
+        return searchableText.includes(searchText);
+      });
+
+      if (filteredOrders.length === 0) {
+        wrapper.innerHTML = `
+          <div class="empty-admin-data">
+            <div>🧾</div>
+            <p>No orders found.</p>
+          </div>
+        `;
+
+        return;
+      }
+
+      const statusOptions = [
+        "Order Placed",
+        "Processing",
+        "Shipped",
+        "Out for Delivery",
+        "Delivered",
+        "Cancelled"
+      ];
+
+      wrapper.innerHTML = `
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Order</th>
+              <th>Customer</th>
+              <th>Date</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Tracking</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            ${filteredOrders.map((order, index) => {
+              const orderId = getOrderId(order, index);
+              const currentStatus = String(order.status || "Order Placed");
+
+              return `
+                <tr>
+                  <td><strong>${escapeAdminHtml(orderId)}</strong></td>
+                  <td>${escapeAdminHtml(getCustomerName(order))}</td>
+                  <td>
+                    ${formatAdminDate(
+                      order.orderDate ||
+                      order.createdAt ||
+                      order.date
+                    )}
+                  </td>
+                  <td>₹${formatAdminPrice(getOrderTotal(order))}</td>
+
+                  <td>
+                    <select
+                      class="status-select"
+                      onchange="updateOrderStatus(
+                        '${encodeURIComponent(orderId)}',
+                        this.value
+                      )"
+                    >
+                      ${statusOptions.map(status => `
+                        <option
+                          value="${status}"
+                          ${status === currentStatus ? "selected" : ""}
+                        >
+                          ${status}
+                        </option>
+                      `).join("")}
+                    </select>
+                  </td>
+
+                  <td>
+                    <a
+                      href="track_order.html?order=${encodeURIComponent(orderId)}"
+                      class="track-button"
+                    >
+                      Track
+                    </a>
+                  </td>
+                </tr>
+              `;
+            }).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+
+    function updateOrderStatus(encodedOrderId, newStatus) {
+      loadAdminOrders();
+
+      const orderId = decodeURIComponent(encodedOrderId);
+
+      const orderIndex = adminOrders.findIndex(
+        (order, index) => getOrderId(order, index) === orderId
+      );
+
+      if (orderIndex === -1) {
+        showAdminToast("Order was not found.");
+        return;
+      }
+
+      adminOrders[orderIndex].status = newStatus;
+      adminOrders[orderIndex].statusUpdatedAt = new Date().toISOString();
+
+      saveStorageArray(ADMIN_ORDERS_KEY, adminOrders);
+
+      try {
+        const lastOrder = JSON.parse(localStorage.getItem("lastOrder"));
+
+        if (
+          lastOrder &&
+          getOrderId(lastOrder) === orderId
+        ) {
+          lastOrder.status = newStatus;
+          lastOrder.statusUpdatedAt = new Date().toISOString();
+
+          localStorage.setItem("lastOrder", JSON.stringify(lastOrder));
+        }
+      } catch (error) {
+        console.error("Unable to update last order:", error);
+      }
+
+      renderAdminDashboard();
+      showAdminToast(`Order status changed to ${newStatus}.`);
+    }
+
+    function initializeAdminPanel() {
+      document.getElementById("adminDate").textContent =
+        new Date().toLocaleDateString("en-IN", {
+          weekday: "short",
+          day: "2-digit",
+          month: "short",
+          year: "numeric"
+        });
+
+      document
+        .getElementById("adminProductForm")
+        .addEventListener("submit", saveAdminProduct);
+
+      loadAdminProducts();
+      loadAdminOrders();
+
+      renderAdminDashboard();
+      renderAdminProducts();
+      renderAdminOrders();
+    }
+
+    document.addEventListener("DOMContentLoaded", initializeAdminPanel);
+
+    window.addEventListener("storage", event => {
+      if (
+        event.key === ADMIN_PRODUCTS_KEY ||
+        event.key === ADMIN_ORDERS_KEY ||
+        event.key === null
+      ) {
+        loadAdminProducts();
+        loadAdminOrders();
+
+        renderAdminDashboard();
+        renderAdminProducts();
+        renderAdminOrders();
+      }
+    });
+  </script>
+
+</body>
+
+</html>

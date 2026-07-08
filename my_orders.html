@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>My Orders - EliteStore</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* ==================================================
+       MY ORDERS PAGE
+    ================================================== */
+
+    .orders-page {
+      min-height: calc(100vh - 75px);
+      padding: 45px 7%;
+      background: #f4f6f8;
+    }
+
+    .orders-container {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .orders-heading {
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .orders-heading h1 {
+      margin-bottom: 7px;
+      color: #111827;
+      font-size: 36px;
+    }
+
+    .orders-heading p {
+      color: #6b7280;
+      font-size: 15px;
+    }
+
+    .continue-shopping-btn {
+      flex-shrink: 0;
+      padding: 12px 20px;
+      border-radius: 10px;
+      background: #111827;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 800;
+      transition: 0.25s;
+    }
+
+    .continue-shopping-btn:hover {
+      background: #fbbf24;
+      color: #111827;
+      transform: translateY(-2px);
+    }
+
+    /* ==================================================
+       ORDERS SUMMARY
+    ================================================== */
+
+    .orders-stats {
+      margin-bottom: 28px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .orders-stat-card {
+      padding: 22px;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      background: #ffffff;
+      box-shadow: 0 8px 25px rgba(17, 24, 39, 0.07);
+    }
+
+    .orders-stat-card span {
+      display: block;
+      margin-bottom: 8px;
+      color: #6b7280;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .orders-stat-card strong {
+      color: #111827;
+      font-size: 26px;
+    }
+
+    /* ==================================================
+       ORDER CARD
+    ================================================== */
+
+    .orders-list {
+      display: grid;
+      gap: 24px;
+    }
+
+    .order-card {
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+      border-radius: 20px;
+      background: #ffffff;
+      box-shadow: 0 10px 32px rgba(17, 24, 39, 0.08);
+    }
+
+    .order-card-header {
+      padding: 20px 23px;
+      border-bottom: 1px solid #e5e7eb;
+      background: #f8fafc;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .order-id-area span {
+      display: block;
+      margin-bottom: 5px;
+      color: #6b7280;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .order-id-area strong {
+      color: #111827;
+      font-size: 17px;
+    }
+
+    .order-header-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .order-date {
+      color: #6b7280;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .order-status {
+      padding: 7px 13px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .status-placed,
+    .status-processing {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-shipped {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .status-delivered {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .status-cancelled {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+
+    /* ==================================================
+       ORDER ITEMS
+    ================================================== */
+
+    .order-items {
+      padding: 5px 23px;
+    }
+
+    .order-product {
+      padding: 18px 0;
+      border-bottom: 1px solid #e5e7eb;
+      display: grid;
+      grid-template-columns: 90px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 17px;
+    }
+
+    .order-product:last-child {
+      border-bottom: none;
+    }
+
+    .order-product-image {
+      width: 90px;
+      height: 90px;
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+      border-radius: 13px;
+      background: #f8fafc;
+    }
+
+    .order-product-image img {
+      width: 100%;
+      height: 100%;
+      padding: 6px;
+      object-fit: contain;
+    }
+
+    .order-product-details {
+      min-width: 0;
+    }
+
+    .order-product-details h3 {
+      margin-bottom: 7px;
+      color: #111827;
+      font-size: 17px;
+      line-height: 1.4;
+    }
+
+    .order-product-details p {
+      margin-top: 4px;
+      color: #6b7280;
+      font-size: 13px;
+    }
+
+    .order-product-price {
+      color: #111827;
+      text-align: right;
+      font-size: 16px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    /* ==================================================
+       ORDER FOOTER
+    ================================================== */
+
+    .order-card-footer {
+      padding: 20px 23px;
+      border-top: 1px solid #e5e7eb;
+      background: #f8fafc;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .order-information {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .order-information-item span {
+      display: block;
+      margin-bottom: 5px;
+      color: #6b7280;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .order-information-item strong {
+      color: #111827;
+      font-size: 14px;
+    }
+
+    .order-total {
+      text-align: right;
+    }
+
+    .order-total span {
+      display: block;
+      margin-bottom: 5px;
+      color: #6b7280;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .order-total strong {
+      color: #16a34a;
+      font-size: 23px;
+    }
+
+
+    .track-order-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 12px;
+      padding: 10px 17px;
+      border-radius: 9px;
+      background: #111827;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 800;
+      transition: 0.25s;
+    }
+
+    .track-order-button:hover {
+      background: #fbbf24;
+      color: #111827;
+      transform: translateY(-2px);
+    }
+
+    /* ==================================================
+       EMPTY ORDERS
+    ================================================== */
+
+    .empty-orders {
+      padding: 75px 25px;
+      border-radius: 20px;
+      background: #ffffff;
+      text-align: center;
+      box-shadow: 0 10px 35px rgba(17, 24, 39, 0.08);
+    }
+
+    .empty-orders-icon {
+      margin-bottom: 18px;
+      font-size: 75px;
+    }
+
+    .empty-orders h2 {
+      margin-bottom: 10px;
+      color: #111827;
+      font-size: 29px;
+    }
+
+    .empty-orders p {
+      max-width: 500px;
+      margin: 0 auto 25px;
+      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    .empty-orders a {
+      display: inline-block;
+      padding: 13px 24px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #111827;
+      text-decoration: none;
+      font-weight: 900;
+      transition: 0.25s;
+    }
+
+    .empty-orders a:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
+    }
+
+    /* ==================================================
+       RESPONSIVE
+    ================================================== */
+
+    @media (max-width: 800px) {
+      .orders-heading {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .orders-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .order-card-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .order-card-footer {
+        grid-template-columns: 1fr;
+      }
+
+      .order-total {
+        padding-top: 15px;
+        border-top: 1px solid #e5e7eb;
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .orders-page {
+        padding: 30px 4%;
+      }
+
+      .orders-heading h1 {
+        font-size: 29px;
+      }
+
+      .order-card-header,
+      .order-items,
+      .order-card-footer {
+        padding-left: 17px;
+        padding-right: 17px;
+      }
+
+      .order-product {
+        grid-template-columns: 75px minmax(0, 1fr);
+      }
+
+      .order-product-image {
+        width: 75px;
+        height: 75px;
+      }
+
+      .order-product-price {
+        grid-column: 2;
+        text-align: left;
+      }
+
+      .order-information {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ================= HEADER ================= -->
+
+  <header>
+    <div
+      class="logo"
+      onclick="window.location.href='index.html'"
+      role="button"
+      tabindex="0"
+    >
+      Elite<span>Store</span>
+    </div>
+
+    <nav>
+      <button
+        type="button"
+        onclick="window.location.href='index.html'"
+      >
+        🏠 Home
+      </button>
+
+      <button
+        type="button"
+        onclick="window.location.href='cart.html'"
+      >
+        🛒 Cart
+      </button>
+    </nav>
+  </header>
+
+  <!-- ================= MY ORDERS ================= -->
+
+  <main class="orders-page">
+
+    <div class="orders-container">
+
+      <div class="orders-heading">
+
+        <div>
+          <h1>My Orders</h1>
+
+          <p>
+            View your complete EliteStore order history.
+          </p>
+        </div>
+
+        <a href="index.html" class="continue-shopping-btn">
+          ← Continue Shopping
+        </a>
+
+      </div>
+
+      <section class="orders-stats" id="ordersStats">
+
+        <div class="orders-stat-card">
+          <span>Total Orders</span>
+          <strong id="totalOrdersCount">0</strong>
+        </div>
+
+        <div class="orders-stat-card">
+          <span>Total Products</span>
+          <strong id="totalProductsCount">0</strong>
+        </div>
+
+        <div class="orders-stat-card">
+          <span>Total Amount</span>
+          <strong>
+            ₹<span id="totalOrdersAmount">0</span>
+          </strong>
+        </div>
+
+      </section>
+
+      <section class="orders-list" id="ordersList"></section>
+
+    </div>
+
+  </main>
+
+  <script>
+    "use strict";
+
+    /* ==================================================
+       STORAGE KEYS
+    ================================================== */
+
+    const ORDERS_STORAGE_KEY = "orders";
+    const LOGIN_REDIRECT_STORAGE_KEY = "eliteLoginRedirect";
+
+    const USER_STORAGE_KEYS = [
+      "user",
+      "eliteUser",
+      "eliteUserAccount"
+    ];
+
+    const FALLBACK_IMAGE =
+      "./Website-images/no-image.png";
+
+
+    /* ==================================================
+       STORAGE HELPERS
+    ================================================== */
+
+    function readStorageObject(key) {
+      try {
+        const value = JSON.parse(
+          localStorage.getItem(key)
+        );
+
+        return (
+          value &&
+          typeof value === "object" &&
+          !Array.isArray(value)
+        )
+          ? value
+          : null;
+      } catch (error) {
+        console.error(
+          `Unable to read ${key}:`,
+          error
+        );
+
+        return null;
+      }
+    }
+
+    function readStorageArray(key) {
+      try {
+        const value = JSON.parse(
+          localStorage.getItem(key)
+        );
+
+        return Array.isArray(value)
+          ? value
+          : [];
+      } catch (error) {
+        console.error(
+          `Unable to read ${key}:`,
+          error
+        );
+
+        return [];
+      }
+    }
+
+
+    /* ==================================================
+       LOGGED-IN USER
+    ================================================== */
+
+    function getLoggedInUser() {
+      for (
+        const storageKey of
+        USER_STORAGE_KEYS
+      ) {
+        const user =
+          readStorageObject(
+            storageKey
+          );
+
+        if (user) {
+          return user;
+        }
+      }
+
+      return null;
+    }
+
+    function normalizeEmail(value) {
+      return String(value || "")
+        .trim()
+        .toLowerCase();
+    }
+
+    function getUserId(user) {
+      if (!user) {
+        return "";
+      }
+
+      return String(
+        user.id ??
+        user.userId ??
+        user.user_id ??
+        ""
+      ).trim();
+    }
+
+    function getUserEmail(user) {
+      if (!user) {
+        return "";
+      }
+
+      return normalizeEmail(
+        user.email ??
+        user.userEmail ??
+        user.accountEmail ??
+        ""
+      );
+    }
+
+    function getUserKey(user) {
+      if (!user) {
+        return "";
+      }
+
+      const userId =
+        getUserId(user);
+
+      if (userId) {
+        return `id:${userId}`;
+      }
+
+      const userEmail =
+        getUserEmail(user);
+
+      if (userEmail) {
+        return `email:${userEmail}`;
+      }
+
+      return "";
+    }
+
+    function isUserLoggedIn() {
+      const user =
+        getLoggedInUser();
+
+      return Boolean(
+        user &&
+        getUserKey(user)
+      );
+    }
+
+    function redirectToLogin() {
+      localStorage.setItem(
+        LOGIN_REDIRECT_STORAGE_KEY,
+        "my_orders.html"
+      );
+
+      alert(
+        "Please login first to view your orders."
+      );
+
+      window.location.replace(
+        "login.html"
+      );
+    }
+
+
+    /* ==================================================
+       USER-WISE ORDER FILTER
+    ================================================== */
+
+    function getOrderUserId(order) {
+      return String(
+        order?.userId ??
+        order?.user_id ??
+        order?.user?.id ??
+        ""
+      ).trim();
+    }
+
+    function getOrderUserEmail(order) {
+      return normalizeEmail(
+        order?.userEmail ??
+        order?.accountEmail ??
+        order?.user?.email ??
+        order?.customer?.email ??
+        order?.email ??
+        ""
+      );
+    }
+
+    function getOrderUserKey(order) {
+      const savedKey =
+        String(
+          order?.userKey ??
+          order?.user?.key ??
+          ""
+        ).trim();
+
+      if (savedKey) {
+        return savedKey;
+      }
+
+      const savedUserId =
+        getOrderUserId(order);
+
+      if (savedUserId) {
+        return `id:${savedUserId}`;
+      }
+
+      const savedEmail =
+        getOrderUserEmail(order);
+
+      if (savedEmail) {
+        return `email:${savedEmail}`;
+      }
+
+      return "";
+    }
+
+    function orderBelongsToUser(
+      order,
+      user
+    ) {
+      if (
+        !order ||
+        !user
+      ) {
+        return false;
+      }
+
+      const currentUserKey =
+        getUserKey(user);
+
+      const currentUserId =
+        getUserId(user);
+
+      const currentUserEmail =
+        getUserEmail(user);
+
+      const orderUserKey =
+        getOrderUserKey(order);
+
+      if (
+        orderUserKey &&
+        currentUserKey &&
+        orderUserKey ===
+          currentUserKey
+      ) {
+        return true;
+      }
+
+      const orderUserId =
+        getOrderUserId(order);
+
+      if (
+        orderUserId &&
+        currentUserId &&
+        orderUserId ===
+          currentUserId
+      ) {
+        return true;
+      }
+
+      const orderUserEmail =
+        getOrderUserEmail(order);
+
+      return Boolean(
+        orderUserEmail &&
+        currentUserEmail &&
+        orderUserEmail ===
+          currentUserEmail
+      );
+    }
+
+    function loadCurrentUserOrders() {
+      const currentUser =
+        getLoggedInUser();
+
+      if (!currentUser) {
+        return [];
+      }
+
+      const allOrders =
+        readStorageArray(
+          ORDERS_STORAGE_KEY
+        );
+
+      return allOrders
+        .filter(order =>
+          orderBelongsToUser(
+            order,
+            currentUser
+          )
+        )
+        .sort(
+          (
+            firstOrder,
+            secondOrder
+          ) => {
+            const firstDate =
+              new Date(
+                firstOrder.orderDate ??
+                firstOrder.createdAt ??
+                firstOrder.date ??
+                0
+              ).getTime();
+
+            const secondDate =
+              new Date(
+                secondOrder.orderDate ??
+                secondOrder.createdAt ??
+                secondOrder.date ??
+                0
+              ).getTime();
+
+            return (
+              secondDate -
+              firstDate
+            );
+          }
+        );
+    }
+
+
+    /* ==================================================
+       COMMON HELPERS
+    ================================================== */
+
+    function formatPrice(value) {
+      return Number(value || 0)
+        .toLocaleString(
+          "en-IN",
+          {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2
+          }
+        );
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function formatOrderDate(
+      dateValue
+    ) {
+      if (!dateValue) {
+        return "Date unavailable";
+      }
+
+      const orderDate =
+        new Date(dateValue);
+
+      if (
+        Number.isNaN(
+          orderDate.getTime()
+        )
+      ) {
+        return escapeHtml(
+          dateValue
+        );
+      }
+
+      return orderDate
+        .toLocaleString(
+          "en-IN",
+          {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+          }
+        );
+    }
+
+    function getOrderItems(order) {
+      if (
+        Array.isArray(
+          order?.items
+        )
+      ) {
+        return order.items;
+      }
+
+      if (
+        Array.isArray(
+          order?.products
+        )
+      ) {
+        return order.products;
+      }
+
+      return [];
+    }
+
+    function getOrderStatusClass(
+      status
+    ) {
+      const normalizedStatus =
+        String(status || "")
+          .trim()
+          .toLowerCase();
+
+      if (
+        normalizedStatus.includes(
+          "cancel"
+        )
+      ) {
+        return "status-cancelled";
+      }
+
+      if (
+        normalizedStatus.includes(
+          "out for delivery"
+        ) ||
+        normalizedStatus.includes(
+          "ship"
+        )
+      ) {
+        return "status-shipped";
+      }
+
+      if (
+        normalizedStatus.includes(
+          "deliver"
+        )
+      ) {
+        return "status-delivered";
+      }
+
+      if (
+        normalizedStatus.includes(
+          "process"
+        ) ||
+        normalizedStatus.includes(
+          "confirm"
+        )
+      ) {
+        return "status-processing";
+      }
+
+      return "status-placed";
+    }
+
+    function calculateOrderTotal(
+      order
+    ) {
+      const savedTotal =
+        Number(
+          order?.total ??
+          order?.grandTotal ??
+          order?.totalAmount
+        );
+
+      if (
+        Number.isFinite(
+          savedTotal
+        ) &&
+        savedTotal >= 0
+      ) {
+        return savedTotal;
+      }
+
+      return getOrderItems(order)
+        .reduce(
+          (
+            total,
+            item
+          ) => {
+            const price =
+              Math.max(
+                0,
+                Number(item?.price) ||
+                0
+              );
+
+            const quantity =
+              Math.max(
+                1,
+                Number(
+                  item?.qty ??
+                  item?.quantity
+                ) || 1
+              );
+
+            return (
+              total +
+              price * quantity
+            );
+          },
+          0
+        );
+    }
+
+    function getOrderProductCount(
+      order
+    ) {
+      return getOrderItems(order)
+        .reduce(
+          (
+            total,
+            item
+          ) => {
+            const quantity =
+              Math.max(
+                1,
+                Number(
+                  item?.qty ??
+                  item?.quantity
+                ) || 1
+              );
+
+            return (
+              total +
+              quantity
+            );
+          },
+          0
+        );
+    }
+
+
+    /* ==================================================
+       ORDER PRODUCT
+    ================================================== */
+
+    function createOrderProduct(
+      item
+    ) {
+      const productName =
+        escapeHtml(
+          item?.name ||
+          item?.productName ||
+          "Product"
+        );
+
+      const productImage =
+        escapeHtml(
+          item?.image ||
+          FALLBACK_IMAGE
+        );
+
+      const productCategory =
+        escapeHtml(
+          item?.category ||
+          "Product"
+        );
+
+      const productPrice =
+        Math.max(
+          0,
+          Number(item?.price) ||
+          0
+        );
+
+      const productQuantity =
+        Math.max(
+          1,
+          Number(
+            item?.qty ??
+            item?.quantity
+          ) || 1
+        );
+
+      const productTotal =
+        Number(
+          item?.itemTotal
+        ) ||
+        productPrice *
+        productQuantity;
+
+      return `
+        <article class="order-product">
+
+          <div class="order-product-image">
+
+            <img
+              src="${productImage}"
+              alt="${productName}"
+              onerror="
+                this.onerror = null;
+                this.src = '${FALLBACK_IMAGE}';
+              "
+            >
+
+          </div>
+
+          <div class="order-product-details">
+
+            <h3>
+              ${productName}
+            </h3>
+
+            <p>
+              Category:
+              ${productCategory}
+            </p>
+
+            <p>
+              Quantity:
+              ${productQuantity}
+            </p>
+
+            <p>
+              Price:
+              ₹${formatPrice(
+                productPrice
+              )}
+            </p>
+
+          </div>
+
+          <div class="order-product-price">
+            ₹${formatPrice(
+              productTotal
+            )}
+          </div>
+
+        </article>
+      `;
+    }
+
+
+    /* ==================================================
+       ORDER CARD
+    ================================================== */
+
+    function createOrderCard(
+      order,
+      index
+    ) {
+      const rawOrderId =
+        String(
+          order?.orderId ??
+          order?.order_id ??
+          order?.id ??
+          `ELITE-ORDER-${index + 1}`
+        );
+
+      const orderId =
+        escapeHtml(
+          rawOrderId
+        );
+
+      const trackingUrl =
+        `track_order.html?order=${encodeURIComponent(
+          rawOrderId
+        )}`;
+
+      const orderDate =
+        formatOrderDate(
+          order?.orderDate ??
+          order?.createdAt ??
+          order?.date
+        );
+
+      const paymentMethod =
+        escapeHtml(
+          order?.paymentMethod ??
+          order?.payment ??
+          "Cash on Delivery"
+        );
+
+      const status =
+        escapeHtml(
+          order?.status ??
+          order?.orderStatus ??
+          "Order Placed"
+        );
+
+      const statusClass =
+        getOrderStatusClass(
+          status
+        );
+
+      const orderItems =
+        getOrderItems(order);
+
+      const total =
+        calculateOrderTotal(
+          order
+        );
+
+      const customerName =
+        escapeHtml(
+          order?.customer?.fullName ??
+          order?.customer?.name ??
+          order?.customerName ??
+          order?.fullName ??
+          "Customer"
+        );
+
+      const deliveryAddress =
+        escapeHtml(
+          order?.deliveryAddress ??
+          (
+            order?.address
+              ? `${order.address}${
+                  order?.city
+                    ? `, ${order.city}`
+                    : ""
+                }${
+                  order?.pincode
+                    ? ` - ${order.pincode}`
+                    : ""
+                }`
+              : order?.customer?.address ??
+                "Address unavailable"
+          )
+        );
+
+      const productCount =
+        getOrderProductCount(
+          order
+        );
+
+      return `
+        <article class="order-card">
+
+          <div class="order-card-header">
+
+            <div class="order-id-area">
+
+              <span>
+                Order ID
+              </span>
+
+              <strong>
+                ${orderId}
+              </strong>
+
+            </div>
+
+            <div class="order-header-right">
+
+              <span class="order-date">
+                ${orderDate}
+              </span>
+
+              <span class="order-status ${statusClass}">
+                ${status}
+              </span>
+
+            </div>
+
+          </div>
+
+          <div class="order-items">
+
+            ${
+              orderItems.length > 0
+                ? orderItems
+                    .map(
+                      createOrderProduct
+                    )
+                    .join("")
+                : `
+                  <div style="
+                    padding: 30px 0;
+                    color: #6b7280;
+                    text-align: center;
+                  ">
+                    Product information is unavailable.
+                  </div>
+                `
+            }
+
+          </div>
+
+          <div class="order-card-footer">
+
+            <div class="order-information">
+
+              <div class="order-information-item">
+
+                <span>
+                  Customer
+                </span>
+
+                <strong>
+                  ${customerName}
+                </strong>
+
+              </div>
+
+              <div class="order-information-item">
+
+                <span>
+                  Payment Method
+                </span>
+
+                <strong>
+                  ${paymentMethod}
+                </strong>
+
+              </div>
+
+              <div class="order-information-item">
+
+                <span>
+                  Products
+                </span>
+
+                <strong>
+                  ${productCount} item(s)
+                </strong>
+
+              </div>
+
+              <div class="order-information-item">
+
+                <span>
+                  Delivery Address
+                </span>
+
+                <strong>
+                  ${deliveryAddress}
+                </strong>
+
+              </div>
+
+            </div>
+
+            <div class="order-total">
+
+              <span>
+                Total Amount
+              </span>
+
+              <strong>
+                ₹${formatPrice(total)}
+              </strong>
+
+              <a
+                href="${trackingUrl}"
+                class="track-order-button"
+              >
+                🚚 Track Order
+              </a>
+
+            </div>
+
+          </div>
+
+        </article>
+      `;
+    }
+
+
+    /* ==================================================
+       ORDER STATISTICS
+    ================================================== */
+
+    function updateOrdersStats(
+      orders
+    ) {
+      const totalOrders =
+        orders.length;
+
+      const totalProducts =
+        orders.reduce(
+          (
+            total,
+            order
+          ) => {
+            return (
+              total +
+              getOrderProductCount(
+                order
+              )
+            );
+          },
+          0
+        );
+
+      const totalAmount =
+        orders.reduce(
+          (
+            total,
+            order
+          ) => {
+            return (
+              total +
+              calculateOrderTotal(
+                order
+              )
+            );
+          },
+          0
+        );
+
+      const totalOrdersCount =
+        document.getElementById(
+          "totalOrdersCount"
+        );
+
+      const totalProductsCount =
+        document.getElementById(
+          "totalProductsCount"
+        );
+
+      const totalOrdersAmount =
+        document.getElementById(
+          "totalOrdersAmount"
+        );
+
+      if (totalOrdersCount) {
+        totalOrdersCount.textContent =
+          totalOrders;
+      }
+
+      if (totalProductsCount) {
+        totalProductsCount.textContent =
+          totalProducts;
+      }
+
+      if (totalOrdersAmount) {
+        totalOrdersAmount.textContent =
+          formatPrice(totalAmount);
+      }
+    }
+
+
+    /* ==================================================
+       EMPTY ORDERS
+    ================================================== */
+
+    function showEmptyOrders(
+      ordersList,
+      ordersStats
+    ) {
+      if (ordersStats) {
+        ordersStats.style.display =
+          "none";
+      }
+
+      if (!ordersList) {
+        return;
+      }
+
+      ordersList.innerHTML = `
+        <div class="empty-orders">
+
+          <div class="empty-orders-icon">
+            📦
+          </div>
+
+          <h2>
+            No orders found
+          </h2>
+
+          <p>
+            This account has not placed any
+            EliteStore orders yet. Start shopping
+            and your orders will appear here.
+          </p>
+
+          <a href="index.html">
+            Start Shopping
+          </a>
+
+        </div>
+      `;
+    }
+
+
+    /* ==================================================
+       DISPLAY CURRENT USER ORDERS
+    ================================================== */
+
+    function displayOrders() {
+      if (!isUserLoggedIn()) {
+        redirectToLogin();
+        return;
+      }
+
+      const currentUser =
+        getLoggedInUser();
+
+      const ordersList =
+        document.getElementById(
+          "ordersList"
+        );
+
+      const ordersStats =
+        document.getElementById(
+          "ordersStats"
+        );
+
+      const headingDescription =
+        document.querySelector(
+          ".orders-heading p"
+        );
+
+      if (
+        headingDescription &&
+        currentUser
+      ) {
+        const accountName =
+          currentUser.name ??
+          currentUser.fullName ??
+          getUserEmail(currentUser) ??
+          "your account";
+
+        headingDescription.textContent =
+          `Showing order history for ${accountName}.`;
+      }
+
+      const orders =
+        loadCurrentUserOrders();
+
+      if (
+        orders.length === 0
+      ) {
+        showEmptyOrders(
+          ordersList,
+          ordersStats
+        );
+
+        return;
+      }
+
+      if (ordersStats) {
+        ordersStats.style.display =
+          "grid";
+      }
+
+      updateOrdersStats(
+        orders
+      );
+
+      if (ordersList) {
+        ordersList.innerHTML =
+          orders
+            .map(
+              createOrderCard
+            )
+            .join("");
+      }
+    }
+
+
+    /* ==================================================
+       INITIALIZATION
+    ================================================== */
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      displayOrders
+    );
+
+    window.addEventListener(
+      "storage",
+      event => {
+        if (
+          event.key ===
+            ORDERS_STORAGE_KEY ||
+          USER_STORAGE_KEYS.includes(
+            event.key
+          ) ||
+          event.key === null
+        ) {
+          displayOrders();
+        }
+      }
+    );
+  </script>
+
+</body>
+
+</html>

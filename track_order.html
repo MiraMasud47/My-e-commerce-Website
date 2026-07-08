@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Track Order - EliteStore</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .tracking-page {
+      min-height: calc(100vh - 75px);
+      padding: 45px 7%;
+      background: #f4f6f8;
+    }
+
+    .tracking-container {
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .tracking-heading {
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .tracking-heading h1 {
+      margin-bottom: 7px;
+      color: #111827;
+      font-size: 36px;
+    }
+
+    .tracking-heading p {
+      color: #6b7280;
+      font-size: 15px;
+    }
+
+    .back-orders-button {
+      padding: 12px 20px;
+      border-radius: 10px;
+      background: #111827;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 800;
+      transition: 0.25s;
+      white-space: nowrap;
+    }
+
+    .back-orders-button:hover {
+      background: #fbbf24;
+      color: #111827;
+      transform: translateY(-2px);
+    }
+
+    .tracking-card {
+      padding: 28px;
+      border: 1px solid #e5e7eb;
+      border-radius: 20px;
+      background: #ffffff;
+      box-shadow: 0 10px 35px rgba(17, 24, 39, 0.08);
+    }
+
+    .tracking-top {
+      padding-bottom: 22px;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .tracking-info span {
+      display: block;
+      margin-bottom: 5px;
+      color: #6b7280;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .tracking-info strong {
+      color: #111827;
+      font-size: 17px;
+    }
+
+    .tracking-status {
+      align-self: flex-start;
+      padding: 8px 14px;
+      border-radius: 30px;
+      background: #fef3c7;
+      color: #92400e;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .tracking-status.delivered {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .tracking-status.cancelled {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+
+    .tracking-progress {
+      margin: 35px 0 10px;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0;
+    }
+
+    .tracking-step {
+      position: relative;
+      text-align: center;
+    }
+
+    .tracking-step:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      top: 21px;
+      left: 50%;
+      width: 100%;
+      height: 4px;
+      background: #e5e7eb;
+      z-index: 0;
+    }
+
+    .tracking-step.completed:not(:last-child)::after,
+    .tracking-step.active:not(:last-child)::after {
+      background: #f59e0b;
+    }
+
+    .tracking-step-circle {
+      width: 44px;
+      height: 44px;
+      margin: 0 auto 12px;
+      position: relative;
+      z-index: 1;
+      border: 3px solid #d1d5db;
+      border-radius: 50%;
+      background: #ffffff;
+      color: #9ca3af;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      font-weight: 900;
+    }
+
+    .tracking-step.completed .tracking-step-circle,
+    .tracking-step.active .tracking-step-circle {
+      border-color: #f59e0b;
+      background: #fbbf24;
+      color: #111827;
+    }
+
+    .tracking-step h3 {
+      margin-bottom: 5px;
+      color: #111827;
+      font-size: 14px;
+    }
+
+    .tracking-step p {
+      color: #6b7280;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .tracking-details-grid {
+      margin-top: 32px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .tracking-section {
+      padding: 22px;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      background: #f8fafc;
+    }
+
+    .tracking-section h2 {
+      margin-bottom: 17px;
+      color: #111827;
+      font-size: 20px;
+    }
+
+    .tracking-product {
+      padding: 14px 0;
+      border-bottom: 1px solid #e5e7eb;
+      display: grid;
+      grid-template-columns: 70px minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .tracking-product:last-child {
+      border-bottom: none;
+    }
+
+    .tracking-product img {
+      width: 70px;
+      height: 70px;
+      padding: 5px;
+      border: 1px solid #e5e7eb;
+      border-radius: 11px;
+      background: #ffffff;
+      object-fit: contain;
+    }
+
+    .tracking-product h3 {
+      margin-bottom: 5px;
+      color: #111827;
+      font-size: 15px;
+    }
+
+    .tracking-product p {
+      color: #6b7280;
+      font-size: 12px;
+    }
+
+    .tracking-product-price {
+      color: #111827;
+      font-size: 14px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .tracking-summary-row {
+      margin: 13px 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      color: #4b5563;
+      font-size: 14px;
+    }
+
+    .tracking-summary-row strong {
+      color: #111827;
+      text-align: right;
+    }
+
+    .tracking-summary-row.total {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid #d1d5db;
+      color: #111827;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .tracking-summary-row.total strong {
+      color: #16a34a;
+    }
+
+    .not-found {
+      padding: 70px 25px;
+      border-radius: 20px;
+      background: #ffffff;
+      text-align: center;
+      box-shadow: 0 10px 35px rgba(17, 24, 39, 0.08);
+    }
+
+    .not-found-icon {
+      margin-bottom: 18px;
+      font-size: 70px;
+    }
+
+    .not-found h2 {
+      margin-bottom: 10px;
+      color: #111827;
+      font-size: 29px;
+    }
+
+    .not-found p {
+      max-width: 520px;
+      margin: 0 auto 24px;
+      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    .not-found a {
+      display: inline-block;
+      padding: 13px 24px;
+      border-radius: 10px;
+      background: #111827;
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 800;
+    }
+
+    @media (max-width: 850px) {
+      .tracking-details-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .tracking-progress {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+
+      .tracking-step {
+        display: grid;
+        grid-template-columns: 50px minmax(0, 1fr);
+        column-gap: 12px;
+        text-align: left;
+        align-items: center;
+      }
+
+      .tracking-step:not(:last-child)::after {
+        width: 4px;
+        height: calc(100% + 15px);
+        top: 44px;
+        left: 22px;
+      }
+
+      .tracking-step-circle {
+        margin: 0;
+        grid-row: 1 / 3;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .tracking-page {
+        padding: 30px 4%;
+      }
+
+      .tracking-heading {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .tracking-heading h1 {
+        font-size: 29px;
+      }
+
+      .tracking-card {
+        padding: 20px;
+      }
+
+      .tracking-product {
+        grid-template-columns: 60px minmax(0, 1fr);
+      }
+
+      .tracking-product img {
+        width: 60px;
+        height: 60px;
+      }
+
+      .tracking-product-price {
+        grid-column: 2;
+      }
+    }
+
+    .track-order-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 12px;
+      padding: 10px 17px;
+      border-radius: 9px;
+      background: #111827;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 800;
+      transition: 0.25s;
+    }
+
+    .track-order-button:hover {
+      background: #fbbf24;
+      color: #111827;
+      transform: translateY(-2px);
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo" onclick="window.location.href='index.html'" role="button" tabindex="0">
+      Elite<span>Store</span>
+    </div>
+
+    <nav>
+      <button type="button" onclick="window.location.href='index.html'">
+        🏠 Home
+      </button>
+
+      <button type="button" onclick="window.location.href='my_orders.html'">
+        📦 My Orders
+      </button>
+    </nav>
+  </header>
+
+  <main class="tracking-page">
+
+    <div class="tracking-container">
+
+      <div class="tracking-heading">
+        <div>
+          <h1>Track Your Order</h1>
+          <p>Check your order details and current delivery progress.</p>
+        </div>
+
+        <a href="my_orders.html" class="back-orders-button">
+          ← Back to My Orders
+        </a>
+      </div>
+
+      <div id="trackingContent"></div>
+
+    </div>
+
+  </main>
+
+  <script>
+    "use strict";
+
+    const ORDERS_STORAGE_KEY = "orders";
+    const FALLBACK_IMAGE = "./Website-images/no-image.png";
+
+    const TRACKING_STEPS = [
+      {
+        key: "placed",
+        title: "Order Placed",
+        description: "Your order has been received.",
+        icon: "✓"
+      },
+      {
+        key: "processing",
+        title: "Processing",
+        description: "Your order is being prepared.",
+        icon: "⚙"
+      },
+      {
+        key: "shipped",
+        title: "Shipped",
+        description: "Your order has left the warehouse.",
+        icon: "🚚"
+      },
+      {
+        key: "out-for-delivery",
+        title: "Out for Delivery",
+        description: "Your order is arriving soon.",
+        icon: "📍"
+      },
+      {
+        key: "delivered",
+        title: "Delivered",
+        description: "Your order has been delivered.",
+        icon: "📦"
+      }
+    ];
+
+    function loadOrders() {
+      try {
+        const savedOrders = JSON.parse(localStorage.getItem(ORDERS_STORAGE_KEY));
+        return Array.isArray(savedOrders) ? savedOrders : [];
+      } catch (error) {
+        console.error("Unable to load orders:", error);
+        return [];
+      }
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function formatPrice(value) {
+      return Number(value || 0).toLocaleString("en-IN");
+    }
+
+    function formatDate(value) {
+      if (!value) {
+        return "Date unavailable";
+      }
+
+      const date = new Date(value);
+
+      if (Number.isNaN(date.getTime())) {
+        return escapeHtml(value);
+      }
+
+      return date.toLocaleString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+
+    function getOrderItems(order) {
+      if (Array.isArray(order.items)) {
+        return order.items;
+      }
+
+      if (Array.isArray(order.products)) {
+        return order.products;
+      }
+
+      return [];
+    }
+
+    function getOrderTotal(order) {
+      const savedTotal = Number(
+        order.total ??
+        order.grandTotal ??
+        order.totalAmount
+      );
+
+      if (savedTotal > 0) {
+        return savedTotal;
+      }
+
+      return getOrderItems(order).reduce((total, item) => {
+        const price = Number(item.price) || 0;
+        const quantity = Math.max(
+          1,
+          Number(item.qty ?? item.quantity) || 1
+        );
+
+        return total + price * quantity;
+      }, 0);
+    }
+
+    function normalizeStatus(status) {
+      const value = String(status || "Order Placed")
+        .trim()
+        .toLowerCase();
+
+      if (value.includes("cancel")) {
+        return "cancelled";
+      }
+
+      if (value.includes("deliver") && !value.includes("out")) {
+        return "delivered";
+      }
+
+      if (value.includes("out")) {
+        return "out-for-delivery";
+      }
+
+      if (value.includes("ship")) {
+        return "shipped";
+      }
+
+      if (value.includes("process") || value.includes("confirm")) {
+        return "processing";
+      }
+
+      return "placed";
+    }
+
+    function getCurrentStepIndex(statusKey) {
+      const index = TRACKING_STEPS.findIndex(step => step.key === statusKey);
+      return index >= 0 ? index : 0;
+    }
+
+    function findSelectedOrder() {
+      const orders = loadOrders();
+      const params = new URLSearchParams(window.location.search);
+      const requestedOrderId = params.get("order");
+
+      if (requestedOrderId) {
+        const selectedOrder = orders.find(order => {
+          const savedOrderId = String(order.orderId || order.id || "");
+          return savedOrderId === requestedOrderId;
+        });
+
+        if (selectedOrder) {
+          return selectedOrder;
+        }
+      }
+
+      try {
+        const lastOrder = JSON.parse(localStorage.getItem("lastOrder"));
+
+        if (lastOrder && typeof lastOrder === "object") {
+          return lastOrder;
+        }
+      } catch (error) {
+        console.error("Unable to load last order:", error);
+      }
+
+      return orders[0] || null;
+    }
+
+    function createTrackingSteps(statusKey) {
+      if (statusKey === "cancelled") {
+        return `
+          <div class="tracking-section" style="margin-top: 30px; text-align: center;">
+            <div style="font-size: 52px; margin-bottom: 12px;">✕</div>
+            <h2 style="color: #dc2626; margin-bottom: 8px;">Order Cancelled</h2>
+            <p style="color: #6b7280; line-height: 1.6;">
+              This order has been cancelled and will not be delivered.
+            </p>
+          </div>
+        `;
+      }
+
+      const currentStepIndex = getCurrentStepIndex(statusKey);
+
+      return `
+        <div class="tracking-progress">
+          ${TRACKING_STEPS.map((step, index) => {
+            const stateClass =
+              index < currentStepIndex
+                ? "completed"
+                : index === currentStepIndex
+                  ? "active"
+                  : "";
+
+            return `
+              <div class="tracking-step ${stateClass}">
+                <div class="tracking-step-circle">${step.icon}</div>
+                <h3>${step.title}</h3>
+                <p>${step.description}</p>
+              </div>
+            `;
+          }).join("")}
+        </div>
+      `;
+    }
+
+    function createProductCard(item) {
+      const name = escapeHtml(item.name || item.productName || "Product");
+      const image = escapeHtml(item.image || FALLBACK_IMAGE);
+      const price = Number(item.price) || 0;
+      const quantity = Math.max(
+        1,
+        Number(item.qty ?? item.quantity) || 1
+      );
+
+      return `
+        <article class="tracking-product">
+          <img
+            src="${image}"
+            alt="${name}"
+            onerror="this.onerror=null; this.src='${FALLBACK_IMAGE}';"
+          >
+
+          <div>
+            <h3>${name}</h3>
+            <p>Quantity: ${quantity}</p>
+          </div>
+
+          <div class="tracking-product-price">
+            ₹${formatPrice(price * quantity)}
+          </div>
+        </article>
+      `;
+    }
+
+    function displayTracking() {
+      const trackingContent = document.getElementById("trackingContent");
+      const order = findSelectedOrder();
+
+      if (!order) {
+        trackingContent.innerHTML = `
+          <section class="not-found">
+            <div class="not-found-icon">📦</div>
+            <h2>Order not found</h2>
+            <p>
+              No order information is available. Place an order first or
+              open tracking from the My Orders page.
+            </p>
+            <a href="index.html">Start Shopping</a>
+          </section>
+        `;
+
+        return;
+      }
+
+      const orderId = escapeHtml(
+        order.orderId || order.id || "EliteStore Order"
+      );
+
+      const status = escapeHtml(order.status || "Order Placed");
+      const statusKey = normalizeStatus(status);
+      const orderItems = getOrderItems(order);
+      const total = getOrderTotal(order);
+
+      const paymentMethod = escapeHtml(
+        order.paymentMethod ||
+        order.payment ||
+        "Cash on Delivery"
+      );
+
+      const addressParts = [
+        order.customer?.address,
+        order.customer?.city,
+        order.customer?.pincode
+      ].filter(Boolean);
+
+      const deliveryAddress = escapeHtml(
+        addressParts.join(", ") ||
+        order.address ||
+        "Address unavailable"
+      );
+
+      trackingContent.innerHTML = `
+        <section class="tracking-card">
+
+          <div class="tracking-top">
+            <div class="tracking-info">
+              <span>Order ID</span>
+              <strong>${orderId}</strong>
+            </div>
+
+            <div class="tracking-info">
+              <span>Order Date</span>
+              <strong>
+                ${formatDate(
+                  order.orderDate ||
+                  order.date ||
+                  order.createdAt
+                )}
+              </strong>
+            </div>
+
+            <div class="tracking-status ${statusKey}">
+              ${status}
+            </div>
+          </div>
+
+          ${createTrackingSteps(statusKey)}
+
+          <div class="tracking-details-grid">
+
+            <section class="tracking-section">
+              <h2>Order Products</h2>
+
+              ${
+                orderItems.length
+                  ? orderItems.map(createProductCard).join("")
+                  : `<p style="color: #6b7280;">Product information is unavailable.</p>`
+              }
+            </section>
+
+            <aside class="tracking-section">
+              <h2>Order Details</h2>
+
+              <div class="tracking-summary-row">
+                <span>Payment</span>
+                <strong>${paymentMethod}</strong>
+              </div>
+
+              <div class="tracking-summary-row">
+                <span>Delivery Address</span>
+                <strong>${deliveryAddress}</strong>
+              </div>
+
+              <div class="tracking-summary-row">
+                <span>Products</span>
+                <strong>${orderItems.length} item(s)</strong>
+              </div>
+
+              <div class="tracking-summary-row total">
+                <span>Total</span>
+                <strong>₹${formatPrice(total)}</strong>
+              </div>
+            </aside>
+
+          </div>
+
+        </section>
+      `;
+    }
+
+    document.addEventListener("DOMContentLoaded", displayTracking);
+  </script>
+
+</body>
+
+</html>

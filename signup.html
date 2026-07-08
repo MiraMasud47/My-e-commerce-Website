@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Create Account - EliteStore</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(
+          circle at top right,
+          rgba(251, 191, 36, 0.16),
+          transparent 35%
+        ),
+        linear-gradient(135deg, #0f172a, #111827, #1f2937);
+    }
+
+    /* ================= HEADER ================= */
+
+    .signup-header {
+      width: 100%;
+      padding: 18px 7%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(17, 24, 39, 0.92);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(15px);
+    }
+
+    .signup-logo {
+      color: white;
+      font-size: 27px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .signup-logo span {
+      color: #fbbf24;
+    }
+
+    .home-link {
+      padding: 10px 18px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      transition: 0.3s;
+    }
+
+    .home-link:hover {
+      background: #fbbf24;
+      border-color: #fbbf24;
+      color: #111827;
+      transform: translateY(-2px);
+    }
+
+    /* ================= PAGE ================= */
+
+    .signup-page {
+      min-height: calc(100vh - 78px);
+      padding: 45px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .signup-container {
+      width: 100%;
+      max-width: 1080px;
+      min-height: 650px;
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      overflow: hidden;
+      border-radius: 26px;
+      background: white;
+      box-shadow: 0 30px 85px rgba(0, 0, 0, 0.38);
+    }
+
+    /* ================= LEFT BANNER ================= */
+
+    .signup-banner {
+      position: relative;
+      overflow: hidden;
+      padding: 55px;
+      display: flex;
+      align-items: center;
+      color: white;
+      background: linear-gradient(145deg, #111827, #1f2937);
+    }
+
+    .signup-banner::before {
+      content: "";
+      width: 330px;
+      height: 330px;
+      position: absolute;
+      top: -130px;
+      right: -100px;
+      border-radius: 50%;
+      background: rgba(251, 191, 36, 0.13);
+    }
+
+    .signup-banner::after {
+      content: "";
+      width: 250px;
+      height: 250px;
+      position: absolute;
+      bottom: -110px;
+      left: -90px;
+      border-radius: 50%;
+      background: rgba(245, 158, 11, 0.1);
+    }
+
+    .banner-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .banner-label {
+      display: inline-block;
+      margin-bottom: 18px;
+      padding: 7px 14px;
+      border: 1px solid rgba(251, 191, 36, 0.35);
+      border-radius: 30px;
+      background: rgba(251, 191, 36, 0.1);
+      color: #fbbf24;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .signup-banner h1 {
+      margin-bottom: 18px;
+      font-size: 45px;
+      line-height: 1.15;
+    }
+
+    .signup-banner h1 span {
+      color: #fbbf24;
+    }
+
+    .signup-banner p {
+      color: #d1d5db;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .signup-benefits {
+      margin-top: 32px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .benefit {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #f3f4f6;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .benefit-icon {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      background: rgba(251, 191, 36, 0.14);
+      color: #fbbf24;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ================= FORM ================= */
+
+    .signup-form-section {
+      padding: 48px 55px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .signup-form {
+      width: 100%;
+      max-width: 430px;
+    }
+
+    .form-heading {
+      margin-bottom: 28px;
+    }
+
+    .form-heading p {
+      margin-bottom: 7px;
+      color: #d97706;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .form-heading h2 {
+      margin-bottom: 8px;
+      color: #111827;
+      font-size: 34px;
+    }
+
+    .form-heading span {
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .input-group {
+      margin-bottom: 17px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 7px;
+      color: #374151;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      transform: translateY(-50%);
+      color: #9ca3af;
+      pointer-events: none;
+    }
+
+    .input-wrapper input {
+      width: 100%;
+      padding: 14px 48px 14px 45px;
+      border: 1px solid #d1d5db;
+      border-radius: 12px;
+      background: #f9fafb;
+      color: #111827;
+      font-size: 15px;
+      outline: none;
+      transition: 0.25s;
+    }
+
+    .input-wrapper input:focus {
+      border-color: #f59e0b;
+      background: white;
+      box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.12);
+    }
+
+    .input-group.invalid input {
+      border-color: #dc2626;
+      background: #fff7f7;
+    }
+
+    .error-message {
+      display: none;
+      margin-top: 6px;
+      color: #dc2626;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .input-group.invalid .error-message {
+      display: block;
+    }
+
+    .password-toggle {
+      width: 34px;
+      height: 34px;
+      position: absolute;
+      top: 50%;
+      right: 12px;
+      transform: translateY(-50%);
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .password-toggle:hover {
+      background: #f3f4f6;
+    }
+
+    /* ================= PASSWORD STRENGTH ================= */
+
+    .strength-box {
+      margin-top: 9px;
+    }
+
+    .strength-track {
+      width: 100%;
+      height: 6px;
+      overflow: hidden;
+      border-radius: 20px;
+      background: #e5e7eb;
+    }
+
+    .strength-bar {
+      width: 0;
+      height: 100%;
+      border-radius: 20px;
+      transition: 0.3s;
+    }
+
+    .strength-text {
+      margin-top: 6px;
+      color: #6b7280;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .terms-group {
+      margin: 5px 0 21px;
+    }
+
+    .terms-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      color: #4b5563;
+      font-size: 13px;
+      line-height: 1.5;
+      cursor: pointer;
+    }
+
+    .terms-label input {
+      width: 16px;
+      height: 16px;
+      margin-top: 2px;
+      accent-color: #f59e0b;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .terms-label a {
+      color: #d97706;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .terms-error {
+      display: none;
+      margin-top: 6px;
+      color: #dc2626;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .terms-group.invalid .terms-error {
+      display: block;
+    }
+
+    .signup-button {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #111827;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(245, 158, 11, 0.28);
+      transition: 0.3s;
+    }
+
+    .signup-button:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 32px rgba(245, 158, 11, 0.4);
+    }
+
+    .signup-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .signup-status {
+      display: none;
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .signup-status.error {
+      display: block;
+      background: #fee2e2;
+      border: 1px solid #fecaca;
+      color: #b91c1c;
+    }
+
+    .signup-status.success {
+      display: block;
+      background: #dcfce7;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+    }
+
+    .login-text {
+      margin-top: 23px;
+      color: #6b7280;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .login-text a {
+      color: #d97706;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .login-text a:hover {
+      text-decoration: underline;
+    }
+
+    .demo-note {
+      margin-top: 20px;
+      padding: 13px;
+      border: 1px dashed #cbd5e1;
+      border-radius: 10px;
+      background: #f8fafc;
+      color: #64748b;
+      font-size: 12px;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .signup-container {
+        max-width: 580px;
+        grid-template-columns: 1fr;
+      }
+
+      .signup-banner {
+        display: none;
+      }
+
+      .signup-form-section {
+        padding: 45px 32px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .signup-header {
+        padding: 15px 4%;
+      }
+
+      .signup-logo {
+        font-size: 23px;
+      }
+
+      .home-link {
+        padding: 9px 13px;
+        font-size: 13px;
+      }
+
+      .signup-page {
+        padding: 25px 13px;
+      }
+
+      .signup-container {
+        min-height: auto;
+        border-radius: 20px;
+      }
+
+      .signup-form-section {
+        padding: 35px 22px;
+      }
+
+      .form-heading h2 {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="signup-header">
+
+    <div class="signup-logo">
+      Elite<span>Store</span>
+    </div>
+
+    <a href="index.html" class="home-link">
+      🏠 Home
+    </a>
+
+  </header>
+
+  <main class="signup-page">
+
+    <section class="signup-container">
+
+      <!-- Left banner -->
+
+      <div class="signup-banner">
+
+        <div class="banner-content">
+
+          <span class="banner-label">
+            Join EliteStore
+          </span>
+
+          <h1>
+            Create your
+            <span>Elite</span>
+            shopping account
+          </h1>
+
+          <p>
+            Create an account to manage your cart, wishlist and orders from
+            one secure place.
+          </p>
+
+          <div class="signup-benefits">
+
+            <div class="benefit">
+              <span class="benefit-icon">✓</span>
+              Save your favourite products
+            </div>
+
+            <div class="benefit">
+              <span class="benefit-icon">✓</span>
+              Faster and easier checkout
+            </div>
+
+            <div class="benefit">
+              <span class="benefit-icon">✓</span>
+              View and manage your orders
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Signup form -->
+
+      <div class="signup-form-section">
+
+        <form
+          class="signup-form"
+          id="signupForm"
+          novalidate
+        >
+
+          <div class="form-heading">
+            <p>New Account</p>
+            <h2>Create Account</h2>
+            <span>Enter your information to get started.</span>
+          </div>
+
+          <!-- Full name -->
+
+          <div class="input-group" id="nameGroup">
+
+            <label for="signupName">
+              Full Name
+            </label>
+
+            <div class="input-wrapper">
+
+              <span class="input-icon">👤</span>
+
+              <input
+                type="text"
+                id="signupName"
+                placeholder="Enter your full name"
+                autocomplete="name"
+              >
+
+            </div>
+
+            <span class="error-message">
+              Full name must contain at least 3 characters.
+            </span>
+
+          </div>
+
+          <!-- Email -->
+
+          <div class="input-group" id="emailGroup">
+
+            <label for="signupEmail">
+              Email Address
+            </label>
+
+            <div class="input-wrapper">
+
+              <span class="input-icon">✉</span>
+
+              <input
+                type="email"
+                id="signupEmail"
+                placeholder="Enter your email"
+                autocomplete="email"
+              >
+
+            </div>
+
+            <span class="error-message">
+              Please enter a valid email address.
+            </span>
+
+          </div>
+
+          <!-- Password -->
+
+          <div class="input-group" id="passwordGroup">
+
+            <label for="signupPassword">
+              Password
+            </label>
+
+            <div class="input-wrapper">
+
+              <span class="input-icon">🔒</span>
+
+              <input
+                type="password"
+                id="signupPassword"
+                placeholder="Minimum 6 characters"
+                autocomplete="new-password"
+              >
+
+              <button
+                type="button"
+                class="password-toggle"
+                onclick="togglePassword('signupPassword', this)"
+                aria-label="Show password"
+              >
+                👁
+              </button>
+
+            </div>
+
+            <div class="strength-box">
+
+              <div class="strength-track">
+                <div
+                  class="strength-bar"
+                  id="strengthBar"
+                ></div>
+              </div>
+
+              <div
+                class="strength-text"
+                id="strengthText"
+              >
+                Password strength
+              </div>
+
+            </div>
+
+            <span class="error-message">
+              Use at least 6 characters with a letter and number.
+            </span>
+
+          </div>
+
+          <!-- Confirm password -->
+
+          <div class="input-group" id="confirmPasswordGroup">
+
+            <label for="confirmPassword">
+              Confirm Password
+            </label>
+
+            <div class="input-wrapper">
+
+              <span class="input-icon">🔐</span>
+
+              <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Enter your password again"
+                autocomplete="new-password"
+              >
+
+              <button
+                type="button"
+                class="password-toggle"
+                onclick="togglePassword('confirmPassword', this)"
+                aria-label="Show password"
+              >
+                👁
+              </button>
+
+            </div>
+
+            <span class="error-message">
+              Both passwords must be the same.
+            </span>
+
+          </div>
+
+          <!-- Terms -->
+
+          <div class="terms-group" id="termsGroup">
+
+            <label class="terms-label">
+
+              <input type="checkbox" id="acceptTerms">
+
+              <span>
+                I agree to the
+                <a href="#" onclick="return false;">Terms & Conditions</a>
+                and
+                <a href="#" onclick="return false;">Privacy Policy</a>.
+              </span>
+
+            </label>
+
+            <span class="terms-error">
+              Please accept the terms and conditions.
+            </span>
+
+          </div>
+
+          <button
+            type="submit"
+            class="signup-button"
+            id="signupButton"
+          >
+            Create EliteStore Account
+          </button>
+
+          <div
+            class="signup-status"
+            id="signupStatus"
+          ></div>
+
+          <p class="login-text">
+            Already have an account?
+            <a href="login.html">Login Here</a>
+          </p>
+
+          <div class="demo-note">
+            This is a frontend demo. Account data is stored in your browser's
+            local storage.
+          </div>
+
+        </form>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <script>
+    "use strict";
+
+    /* ===============================
+       STORAGE KEYS
+    ================================ */
+
+    const REGISTERED_USER_KEY =
+      "registeredUser";
+
+    const REGISTERED_USERS_KEY =
+      "registeredUsers";
+
+    const LOGIN_USER_KEY =
+      "user";
+
+    const ELITE_USER_KEY =
+      "eliteUser";
+
+    const ELITE_USER_ACCOUNT_KEY =
+      "eliteUserAccount";
+
+    const LOGIN_STATUS_KEY =
+      "isLoggedIn";
+
+    const ACTIVE_USER_ID_KEY =
+      "activeUserId";
+
+    const REMEMBERED_EMAIL_KEY =
+      "rememberedEmail";
+
+    const LOGIN_REDIRECT_KEY =
+      "eliteLoginRedirect";
+
+
+    /* ===============================
+       ELEMENTS
+    ================================ */
+
+    const signupForm =
+      document.getElementById(
+        "signupForm"
+      );
+
+    const nameInput =
+      document.getElementById(
+        "signupName"
+      );
+
+    const emailInput =
+      document.getElementById(
+        "signupEmail"
+      );
+
+    const passwordInput =
+      document.getElementById(
+        "signupPassword"
+      );
+
+    const confirmPasswordInput =
+      document.getElementById(
+        "confirmPassword"
+      );
+
+    const termsInput =
+      document.getElementById(
+        "acceptTerms"
+      );
+
+    const signupButton =
+      document.getElementById(
+        "signupButton"
+      );
+
+    const signupStatus =
+      document.getElementById(
+        "signupStatus"
+      );
+
+    const strengthBar =
+      document.getElementById(
+        "strengthBar"
+      );
+
+    const strengthText =
+      document.getElementById(
+        "strengthText"
+      );
+
+
+    /* ===============================
+       COMMON FUNCTIONS
+    ================================ */
+
+    function normalizeEmail(value) {
+      return String(value || "")
+        .trim()
+        .toLowerCase();
+    }
+
+    function createUserStorageId(email) {
+      return encodeURIComponent(
+        normalizeEmail(email)
+      );
+    }
+
+    function createUserId(email) {
+      return (
+        `elite_${createUserStorageId(email)}`
+      );
+    }
+
+    function readStorageObject(key) {
+      try {
+        const value =
+          JSON.parse(
+            localStorage.getItem(key)
+          );
+
+        return (
+          value &&
+          typeof value === "object" &&
+          !Array.isArray(value)
+        )
+          ? value
+          : null;
+      } catch (error) {
+        console.error(
+          `Unable to read ${key}:`,
+          error
+        );
+
+        return null;
+      }
+    }
+
+    function readStorageArray(key) {
+      try {
+        const value =
+          JSON.parse(
+            localStorage.getItem(key)
+          );
+
+        return Array.isArray(value)
+          ? value
+          : [];
+      } catch (error) {
+        console.error(
+          `Unable to read ${key}:`,
+          error
+        );
+
+        return [];
+      }
+    }
+
+    function setFieldError(
+      groupId,
+      hasError
+    ) {
+      const group =
+        document.getElementById(
+          groupId
+        );
+
+      if (group) {
+        group.classList.toggle(
+          "invalid",
+          Boolean(hasError)
+        );
+      }
+    }
+
+    function showSignupStatus(
+      message,
+      type
+    ) {
+      if (!signupStatus) {
+        return;
+      }
+
+      signupStatus.textContent =
+        message;
+
+      signupStatus.className =
+        `signup-status ${type}`;
+    }
+
+    function clearSignupStatus() {
+      if (!signupStatus) {
+        return;
+      }
+
+      signupStatus.textContent = "";
+      signupStatus.className =
+        "signup-status";
+    }
+
+    function setSignupButtonLoading(
+      loading
+    ) {
+      if (!signupButton) {
+        return;
+      }
+
+      signupButton.disabled =
+        Boolean(loading);
+
+      signupButton.textContent =
+        loading
+          ? "Creating Account..."
+          : "Create EliteStore Account";
+    }
+
+
+    /* ===============================
+       PASSWORD VISIBILITY
+    ================================ */
+
+    function togglePassword(
+      inputId,
+      button
+    ) {
+      const input =
+        document.getElementById(
+          inputId
+        );
+
+      if (
+        !input ||
+        !button
+      ) {
+        return;
+      }
+
+      const passwordVisible =
+        input.type === "text";
+
+      input.type =
+        passwordVisible
+          ? "password"
+          : "text";
+
+      button.textContent =
+        passwordVisible
+          ? "👁"
+          : "🙈";
+
+      button.setAttribute(
+        "aria-label",
+        passwordVisible
+          ? "Show password"
+          : "Hide password"
+      );
+    }
+
+
+    /* ===============================
+       PASSWORD STRENGTH
+    ================================ */
+
+    function updatePasswordStrength() {
+      if (
+        !passwordInput ||
+        !strengthBar ||
+        !strengthText
+      ) {
+        return;
+      }
+
+      const password =
+        passwordInput.value;
+
+      let strength = 0;
+
+      if (password.length >= 6) {
+        strength++;
+      }
+
+      if (password.length >= 10) {
+        strength++;
+      }
+
+      if (/[A-Z]/.test(password)) {
+        strength++;
+      }
+
+      if (/[a-z]/.test(password)) {
+        strength++;
+      }
+
+      if (/\d/.test(password)) {
+        strength++;
+      }
+
+      if (/[^A-Za-z0-9]/.test(password)) {
+        strength++;
+      }
+
+      if (password.length === 0) {
+        strengthBar.style.width =
+          "0";
+
+        strengthBar.style.background =
+          "transparent";
+
+        strengthText.textContent =
+          "Password strength";
+
+        return;
+      }
+
+      if (strength <= 2) {
+        strengthBar.style.width =
+          "33%";
+
+        strengthBar.style.background =
+          "#ef4444";
+
+        strengthText.textContent =
+          "Weak password";
+      } else if (strength <= 4) {
+        strengthBar.style.width =
+          "66%";
+
+        strengthBar.style.background =
+          "#f59e0b";
+
+        strengthText.textContent =
+          "Medium password";
+      } else {
+        strengthBar.style.width =
+          "100%";
+
+        strengthBar.style.background =
+          "#16a34a";
+
+        strengthText.textContent =
+          "Strong password";
+      }
+    }
+
+
+    /* ===============================
+       VALIDATION
+    ================================ */
+
+    function validateSignupForm() {
+      const fullName =
+        String(
+          nameInput?.value || ""
+        ).trim();
+
+      const email =
+        normalizeEmail(
+          emailInput?.value
+        );
+
+      const password =
+        String(
+          passwordInput?.value || ""
+        );
+
+      const confirmPassword =
+        String(
+          confirmPasswordInput?.value ||
+          ""
+        );
+
+      const nameValid =
+        fullName.length >= 3;
+
+      const emailValid =
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+          .test(email);
+
+      const passwordValid =
+        password.length >= 6 &&
+        /[A-Za-z]/.test(password) &&
+        /\d/.test(password);
+
+      const confirmPasswordValid =
+        confirmPassword !== "" &&
+        password ===
+          confirmPassword;
+
+      const termsValid =
+        Boolean(
+          termsInput?.checked
+        );
+
+      setFieldError(
+        "nameGroup",
+        !nameValid
+      );
+
+      setFieldError(
+        "emailGroup",
+        !emailValid
+      );
+
+      setFieldError(
+        "passwordGroup",
+        !passwordValid
+      );
+
+      setFieldError(
+        "confirmPasswordGroup",
+        !confirmPasswordValid
+      );
+
+      const termsGroup =
+        document.getElementById(
+          "termsGroup"
+        );
+
+      if (termsGroup) {
+        termsGroup.classList.toggle(
+          "invalid",
+          !termsValid
+        );
+      }
+
+      return (
+        nameValid &&
+        emailValid &&
+        passwordValid &&
+        confirmPasswordValid &&
+        termsValid
+      );
+    }
+
+
+    /* ===============================
+       REGISTERED USERS
+    ================================ */
+
+    function readRegisteredUsers() {
+      const users = [];
+
+      const savedUsers =
+        readStorageArray(
+          REGISTERED_USERS_KEY
+        );
+
+      savedUsers.forEach(user => {
+        if (
+          user &&
+          typeof user === "object" &&
+          user.email
+        ) {
+          users.push(user);
+        }
+      });
+
+      /*
+        Old signup.html support.
+      */
+
+      const oldUser =
+        readStorageObject(
+          REGISTERED_USER_KEY
+        );
+
+      if (oldUser?.email) {
+        users.push(oldUser);
+      }
+
+      const uniqueUsers =
+        new Map();
+
+      users.forEach(user => {
+        const email =
+          normalizeEmail(
+            user.email
+          );
+
+        if (email) {
+          uniqueUsers.set(
+            email,
+            user
+          );
+        }
+      });
+
+      return Array.from(
+        uniqueUsers.values()
+      );
+    }
+
+    function findRegisteredUser(email) {
+      const normalizedEmail =
+        normalizeEmail(email);
+
+      return (
+        readRegisteredUsers()
+          .find(user => {
+            return (
+              normalizeEmail(
+                user.email
+              ) === normalizedEmail
+            );
+          }) || null
+      );
+    }
+
+    function saveRegisteredUser(
+      newUser
+    ) {
+      const users =
+        readRegisteredUsers();
+
+      const filteredUsers =
+        users.filter(user => {
+          return (
+            normalizeEmail(
+              user.email
+            ) !==
+            normalizeEmail(
+              newUser.email
+            )
+          );
+        });
+
+      filteredUsers.push(
+        newUser
+      );
+
+      localStorage.setItem(
+        REGISTERED_USERS_KEY,
+        JSON.stringify(
+          filteredUsers
+        )
+      );
+
+      /*
+        Keep the latest account in the old key
+        for backward compatibility.
+      */
+
+      localStorage.setItem(
+        REGISTERED_USER_KEY,
+        JSON.stringify(
+          newUser
+        )
+      );
+    }
+
+
+    /* ===============================
+       LOGOUT OLD SESSION
+    ================================ */
+
+    function clearActiveLoginSession() {
+      localStorage.removeItem(
+        LOGIN_USER_KEY
+      );
+
+      localStorage.removeItem(
+        ELITE_USER_KEY
+      );
+
+      localStorage.removeItem(
+        ELITE_USER_ACCOUNT_KEY
+      );
+
+      localStorage.removeItem(
+        ACTIVE_USER_ID_KEY
+      );
+
+      localStorage.setItem(
+        LOGIN_STATUS_KEY,
+        "false"
+      );
+    }
+
+
+    /* ===============================
+       SIGNUP
+    ================================ */
+
+    function signupUser(event) {
+      event.preventDefault();
+
+      clearSignupStatus();
+
+      if (!validateSignupForm()) {
+        showSignupStatus(
+          "Please check all highlighted fields.",
+          "error"
+        );
+
+        return;
+      }
+
+      const fullName =
+        nameInput.value.trim();
+
+      const email =
+        normalizeEmail(
+          emailInput.value
+        );
+
+      const password =
+        passwordInput.value;
+
+      const existingUser =
+        findRegisteredUser(email);
+
+      if (existingUser) {
+        setFieldError(
+          "emailGroup",
+          true
+        );
+
+        showSignupStatus(
+          "An account with this email already exists. Please login instead.",
+          "error"
+        );
+
+        emailInput.focus();
+        return;
+      }
+
+      setSignupButtonLoading(
+        true
+      );
+
+      try {
+        const userId =
+          createUserId(email);
+
+        const storageId =
+          createUserStorageId(
+            email
+          );
+
+        const createdAt =
+          new Date().toISOString();
+
+        const newUser = {
+          id: userId,
+          userId: userId,
+          user_id: userId,
+
+          storageId: storageId,
+
+          name: fullName,
+          fullName: fullName,
+
+          email: email,
+          userEmail: email,
+          accountEmail: email,
+
+          userKey: `id:${userId}`,
+
+          password: password,
+
+          createdAt: createdAt,
+          updatedAt: createdAt
+        };
+
+        saveRegisteredUser(
+          newUser
+        );
+
+        clearActiveLoginSession();
+
+        localStorage.setItem(
+          REMEMBERED_EMAIL_KEY,
+          email
+        );
+
+        /*
+          After signup, login should open normally.
+          Any previous checkout/orders redirect is removed.
+        */
+
+        localStorage.removeItem(
+          LOGIN_REDIRECT_KEY
+        );
+
+        showSignupStatus(
+          "Account created successfully! Opening login page...",
+          "success"
+        );
+
+        signupForm.reset();
+        updatePasswordStrength();
+
+        window.setTimeout(() => {
+          window.location.replace(
+            "login.html"
+          );
+        }, 700);
+      } catch (error) {
+        console.error(
+          "Unable to create account:",
+          error
+        );
+
+        setSignupButtonLoading(
+          false
+        );
+
+        showSignupStatus(
+          "Account could not be created. Please try again.",
+          "error"
+        );
+      }
+    }
+
+
+    /* ===============================
+       EVENTS
+    ================================ */
+
+    nameInput?.addEventListener(
+      "input",
+      () => {
+        setFieldError(
+          "nameGroup",
+          false
+        );
+
+        clearSignupStatus();
+      }
+    );
+
+    emailInput?.addEventListener(
+      "input",
+      () => {
+        emailInput.value =
+          emailInput.value
+            .replace(/\s/g, "");
+
+        setFieldError(
+          "emailGroup",
+          false
+        );
+
+        clearSignupStatus();
+      }
+    );
+
+    passwordInput?.addEventListener(
+      "input",
+      () => {
+        setFieldError(
+          "passwordGroup",
+          false
+        );
+
+        updatePasswordStrength();
+        clearSignupStatus();
+
+        if (
+          confirmPasswordInput?.value !==
+          ""
+        ) {
+          setFieldError(
+            "confirmPasswordGroup",
+            passwordInput.value !==
+              confirmPasswordInput.value
+          );
+        }
+      }
+    );
+
+    confirmPasswordInput
+      ?.addEventListener(
+        "input",
+        () => {
+          setFieldError(
+            "confirmPasswordGroup",
+            passwordInput.value !==
+              confirmPasswordInput.value
+          );
+
+          clearSignupStatus();
+        }
+      );
+
+    termsInput?.addEventListener(
+      "change",
+      () => {
+        const termsGroup =
+          document.getElementById(
+            "termsGroup"
+          );
+
+        termsGroup?.classList.remove(
+          "invalid"
+        );
+
+        clearSignupStatus();
+      }
+    );
+
+    signupForm?.addEventListener(
+      "submit",
+      signupUser
+    );
+
+
+    /* ===============================
+       INITIALIZATION
+    ================================ */
+
+    function initializeSignupPage() {
+      updatePasswordStrength();
+    }
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeSignupPage
+    );
+  </script>
+
+</body>
+
+</html>

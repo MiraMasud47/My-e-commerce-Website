@@ -1,0 +1,2973 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Checkout - EliteStore</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* ===============================
+       CHECKOUT PAGE
+    ================================ */
+
+    .checkout-page {
+      min-height: calc(100vh - 75px);
+      padding: 45px 7%;
+      background: #f4f6f8;
+    }
+
+    .checkout-container {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .checkout-heading {
+      margin-bottom: 28px;
+    }
+
+    .checkout-heading h1 {
+      margin-bottom: 8px;
+      color: #111827;
+      font-size: 36px;
+    }
+
+    .checkout-heading p {
+      color: #6b7280;
+      font-size: 15px;
+    }
+
+    .checkout-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 390px;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .checkout-form-box,
+    .order-summary {
+      border-radius: 20px;
+      background: #ffffff;
+      box-shadow: 0 10px 35px rgba(17, 24, 39, 0.08);
+    }
+
+    .checkout-form-box {
+      padding: 30px;
+    }
+
+    .checkout-section {
+      margin-bottom: 32px;
+    }
+
+    .checkout-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .checkout-section-title {
+      margin-bottom: 22px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .checkout-section-number {
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: #111827;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+    }
+
+    .checkout-section-title h2 {
+      color: #111827;
+      font-size: 22px;
+    }
+
+    .checkout-form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .checkout-input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .checkout-input-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .checkout-input-group label {
+      color: #374151;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .required {
+      color: #dc2626;
+    }
+
+    .checkout-input-group input,
+    .checkout-input-group textarea {
+      width: 100%;
+      padding: 14px 15px;
+      border: 1px solid #d1d5db;
+      border-radius: 11px;
+      background: #ffffff;
+      color: #111827;
+      font-size: 15px;
+      outline: none;
+      transition: 0.25s;
+    }
+
+    .checkout-input-group input:disabled {
+      background: #e5e7eb;
+      color: #9ca3af;
+      cursor: not-allowed;
+    }
+
+    .checkout-input-group textarea {
+      min-height: 115px;
+      resize: vertical;
+    }
+
+    .checkout-input-group input:focus,
+    .checkout-input-group textarea:focus {
+      border-color: #f59e0b;
+      box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.12);
+    }
+
+    .checkout-input-group.invalid input,
+    .checkout-input-group.invalid textarea {
+      border-color: #dc2626;
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.08);
+    }
+
+    .error-message {
+      display: none;
+      color: #dc2626;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .checkout-input-group.invalid .error-message {
+      display: block;
+    }
+
+    /* ===============================
+       PAYMENT METHODS
+    ================================ */
+
+    .payment-options {
+      display: grid;
+      gap: 14px;
+    }
+
+    .payment-option {
+      position: relative;
+    }
+
+    .payment-option > input[type="radio"] {
+      width: 1px;
+      height: 1px;
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .payment-option > label {
+      padding: 17px;
+      border: 2px solid #e5e7eb;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+
+    .payment-option > label:hover {
+      border-color: #fbbf24;
+      background: #fffbeb;
+    }
+
+    .payment-option > input:focus-visible + label {
+      outline: 3px solid rgba(251, 191, 36, 0.45);
+      outline-offset: 3px;
+    }
+
+    .payment-option > input:checked + label {
+      border-color: #f59e0b;
+      background: #fffbeb;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+    }
+
+    .payment-option > input:checked + label::after {
+      content: "✓";
+      width: 25px;
+      height: 25px;
+      margin-left: auto;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: #f59e0b;
+      color: #111827;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .payment-icon {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+      border-radius: 12px;
+      background: #f3f4f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .payment-information {
+      min-width: 0;
+    }
+
+    .payment-information strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #111827;
+    }
+
+    .payment-information span {
+      color: #6b7280;
+      font-size: 13px;
+    }
+
+    .upi-box {
+      display: none;
+      margin-top: 14px;
+      padding: 17px;
+      border: 1px solid #e5e7eb;
+      border-radius: 13px;
+      background: #f8fafc;
+    }
+
+    .upi-box.active {
+      display: block;
+      animation: show-upi-box 0.3s ease both;
+    }
+
+    @keyframes show-upi-box {
+      from {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .upi-help {
+      margin-top: 9px;
+      color: #6b7280;
+      font-size: 12px;
+    }
+
+    .upi-examples {
+      margin-top: 9px;
+      padding: 10px 12px;
+      border-radius: 9px;
+      background: #ffffff;
+      color: #4b5563;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .payment-note {
+      margin-top: 12px;
+      color: #6b7280;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    /* ===============================
+       COUPON SYSTEM
+    ================================ */
+
+    .coupon-box {
+      margin: 20px 0;
+      padding: 18px;
+      border: 1px dashed #d1d5db;
+      border-radius: 14px;
+      background: #f8fafc;
+    }
+
+    .coupon-box h3 {
+      margin-bottom: 6px;
+      color: #111827;
+      font-size: 16px;
+    }
+
+    .coupon-box > p {
+      margin-bottom: 13px;
+      color: #6b7280;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .coupon-input-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 9px;
+    }
+
+    .coupon-input-row input {
+      width: 100%;
+      min-width: 0;
+      padding: 12px 13px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      background: #ffffff;
+      color: #111827;
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      outline: none;
+    }
+
+    .coupon-input-row input:focus {
+      border-color: #f59e0b;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.12);
+    }
+
+    .apply-coupon-button {
+      padding: 12px 16px;
+      border: none;
+      border-radius: 10px;
+      background: #111827;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .apply-coupon-button:hover {
+      background: #fbbf24;
+      color: #111827;
+    }
+
+    .coupon-message {
+      display: none;
+      margin-top: 11px;
+      padding: 9px 11px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .coupon-message.success {
+      display: block;
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .coupon-message.error {
+      display: block;
+      background: #fee2e2;
+      color: #dc2626;
+    }
+
+    .applied-coupon {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: #ecfdf5;
+      color: #166534;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .applied-coupon.active {
+      display: flex;
+    }
+
+    .remove-coupon-button {
+      border: none;
+      background: transparent;
+      color: #dc2626;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .discount-row {
+      display: none;
+      color: #15803d;
+    }
+
+    .discount-row.active {
+      display: flex;
+    }
+
+    .discount-row strong {
+      color: #15803d;
+    }
+
+    /* ===============================
+       ORDER SUMMARY
+    ================================ */
+
+    .order-summary {
+      padding: 26px;
+      position: sticky;
+      top: 105px;
+    }
+
+    .order-summary h2 {
+      padding-bottom: 18px;
+      border-bottom: 1px solid #e5e7eb;
+      color: #111827;
+      font-size: 24px;
+    }
+
+    .checkout-products {
+      max-height: 330px;
+      margin: 8px 0 20px;
+      padding-right: 5px;
+      overflow-y: auto;
+    }
+
+    .checkout-product {
+      padding: 15px 0;
+      border-bottom: 1px solid #e5e7eb;
+      display: grid;
+      grid-template-columns: 68px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .checkout-product:last-child {
+      border-bottom: none;
+    }
+
+    .checkout-product-image {
+      width: 68px;
+      height: 68px;
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+      border-radius: 11px;
+      background: #f8fafc;
+    }
+
+    .checkout-product-image img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+    }
+
+    .checkout-product-details {
+      min-width: 0;
+    }
+
+    .checkout-product-details h3 {
+      margin-bottom: 6px;
+      overflow: hidden;
+      color: #111827;
+      font-size: 14px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .checkout-product-details p {
+      color: #6b7280;
+      font-size: 12px;
+    }
+
+    .checkout-product-price {
+      color: #111827;
+      font-size: 14px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .summary-row {
+      margin: 14px 0;
+      color: #4b5563;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      font-size: 15px;
+    }
+
+    .summary-row strong {
+      color: #111827;
+    }
+
+    .free-delivery {
+      color: #16a34a !important;
+    }
+
+    .summary-divider {
+      height: 1px;
+      margin: 20px 0;
+      background: #e5e7eb;
+    }
+
+    .grand-total {
+      color: #111827;
+      font-size: 21px;
+      font-weight: 800;
+    }
+
+    .place-order-button {
+      width: 100%;
+      margin-top: 22px;
+      padding: 16px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #111827;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 9px 24px rgba(245, 158, 11, 0.3);
+      transition: 0.3s;
+    }
+
+    .place-order-button:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 13px 30px rgba(245, 158, 11, 0.4);
+    }
+
+    .place-order-button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .back-cart-button {
+      display: block;
+      margin-top: 14px;
+      padding: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 11px;
+      color: #111827;
+      text-align: center;
+      text-decoration: none;
+      font-weight: 700;
+      transition: 0.25s;
+    }
+
+    .back-cart-button:hover {
+      border-color: #111827;
+      background: #111827;
+      color: #ffffff;
+    }
+
+    .secure-text {
+      margin-top: 14px;
+      color: #6b7280;
+      text-align: center;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    /* ===============================
+       EMPTY CART
+    ================================ */
+
+    .empty-checkout {
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 60px 25px;
+      border-radius: 20px;
+      background: #ffffff;
+      text-align: center;
+      box-shadow: 0 10px 35px rgba(17, 24, 39, 0.08);
+    }
+
+    .empty-checkout-icon {
+      margin-bottom: 18px;
+      font-size: 70px;
+    }
+
+    .empty-checkout h2 {
+      margin-bottom: 10px;
+      color: #111827;
+      font-size: 29px;
+    }
+
+    .empty-checkout p {
+      margin-bottom: 24px;
+      color: #6b7280;
+    }
+
+    .empty-checkout a {
+      display: inline-block;
+      padding: 13px 25px;
+      border-radius: 10px;
+      background: #111827;
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    /* ===============================
+       ORDER SUCCESS
+    ================================ */
+
+    .order-success {
+      display: none;
+      max-width: 720px;
+      margin: 30px auto;
+      padding: 50px 30px;
+      border-radius: 22px;
+      background: #ffffff;
+      text-align: center;
+      box-shadow: 0 12px 40px rgba(17, 24, 39, 0.1);
+    }
+
+    .success-icon {
+      width: 88px;
+      height: 88px;
+      margin: 0 auto 22px;
+      border-radius: 50%;
+      background: #dcfce7;
+      color: #16a34a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      font-weight: 900;
+    }
+
+    .order-success h1 {
+      margin-bottom: 12px;
+      color: #111827;
+      font-size: 34px;
+    }
+
+    .order-success > p {
+      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    .success-details {
+      max-width: 430px;
+      margin: 25px auto;
+      padding: 20px;
+      border-radius: 14px;
+      background: #f8fafc;
+      text-align: left;
+    }
+
+    .success-row {
+      margin: 12px 0;
+      color: #4b5563;
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .success-row strong {
+      color: #111827;
+    }
+
+    .success-actions {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .success-actions a {
+      padding: 13px 22px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: 0.25s;
+    }
+
+    .continue-shopping {
+      background: #111827;
+      color: #ffffff;
+    }
+
+    .view-orders {
+      background: #fbbf24;
+      color: #111827;
+    }
+
+    .track-order {
+      background: #2563eb;
+      color: #ffffff;
+    }
+
+    .track-order:hover {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+    }
+
+    /* ===============================
+       RESPONSIVE
+    ================================ */
+
+    @media (max-width: 950px) {
+      .checkout-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .order-summary {
+        position: static;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .checkout-page {
+        padding: 30px 4%;
+      }
+
+      .checkout-heading h1 {
+        font-size: 29px;
+      }
+
+      .checkout-form-box,
+      .order-summary {
+        padding: 20px;
+      }
+
+      .checkout-form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .checkout-input-group.full-width {
+        grid-column: auto;
+      }
+
+      .checkout-product {
+        grid-template-columns: 58px minmax(0, 1fr);
+      }
+
+      .checkout-product-image {
+        width: 58px;
+        height: 58px;
+      }
+
+      .checkout-product-price {
+        grid-column: 2;
+      }
+
+      .coupon-input-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo">
+      Elite<span>Store</span>
+    </div>
+
+    <nav>
+      <button
+        type="button"
+        onclick="window.location.href='index.html'"
+      >
+        🏠 Home
+      </button>
+
+      <button
+        type="button"
+        onclick="window.location.href='cart.html'"
+      >
+        🛒 Cart
+      </button>
+    </nav>
+  </header>
+
+  <main class="checkout-page">
+
+    <div
+      class="checkout-container"
+      id="checkoutContainer"
+    >
+
+      <div class="checkout-heading">
+        <h1>Secure Checkout</h1>
+        <p>Enter your details and complete your order.</p>
+      </div>
+
+      <div class="checkout-layout">
+
+        <!-- Customer form -->
+
+        <section class="checkout-form-box">
+
+          <form id="checkoutForm" novalidate>
+
+            <!-- Contact Details -->
+
+            <div class="checkout-section">
+
+              <div class="checkout-section-title">
+                <span class="checkout-section-number">1</span>
+                <h2>Contact Details</h2>
+              </div>
+
+              <div class="checkout-form-grid">
+
+                <div
+                  class="checkout-input-group"
+                  id="fullNameGroup"
+                >
+                  <label for="fullName">
+                    Full Name
+                    <span class="required">*</span>
+                  </label>
+
+                  <input
+                    type="text"
+                    id="fullName"
+                    placeholder="Enter your full name"
+                    autocomplete="name"
+                  >
+
+                  <span class="error-message">
+                    Enter at least 3 characters.
+                  </span>
+                </div>
+
+                <div
+                  class="checkout-input-group"
+                  id="mobileGroup"
+                >
+                  <label for="mobile">
+                    Mobile Number
+                    <span class="required">*</span>
+                  </label>
+
+                  <input
+                    type="tel"
+                    id="mobile"
+                    placeholder="10-digit mobile number"
+                    maxlength="10"
+                    inputmode="numeric"
+                    autocomplete="tel"
+                  >
+
+                  <span class="error-message">
+                    Enter a valid 10-digit mobile number.
+                  </span>
+                </div>
+
+                <div
+                  class="checkout-input-group full-width"
+                  id="emailGroup"
+                >
+                  <label for="email">
+                    Email Address
+                  </label>
+
+                  <input
+                    type="email"
+                    id="email"
+                    placeholder="example@email.com"
+                    autocomplete="email"
+                  >
+
+                  <span class="error-message">
+                    Enter a valid email address.
+                  </span>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Delivery Address -->
+
+            <div class="checkout-section">
+
+              <div class="checkout-section-title">
+                <span class="checkout-section-number">2</span>
+                <h2>Delivery Address</h2>
+              </div>
+
+              <div class="checkout-form-grid">
+
+                <div
+                  class="checkout-input-group full-width"
+                  id="addressGroup"
+                >
+                  <label for="address">
+                    Full Address
+                    <span class="required">*</span>
+                  </label>
+
+                  <textarea
+                    id="address"
+                    placeholder="House number, street, area and landmark"
+                    autocomplete="street-address"
+                  ></textarea>
+
+                  <span class="error-message">
+                    Enter your complete delivery address.
+                  </span>
+                </div>
+
+                <div
+                  class="checkout-input-group"
+                  id="cityGroup"
+                >
+                  <label for="city">
+                    City
+                    <span class="required">*</span>
+                  </label>
+
+                  <input
+                    type="text"
+                    id="city"
+                    placeholder="Enter city"
+                    autocomplete="address-level2"
+                  >
+
+                  <span class="error-message">
+                    Enter your city.
+                  </span>
+                </div>
+
+                <div
+                  class="checkout-input-group"
+                  id="pincodeGroup"
+                >
+                  <label for="pincode">
+                    PIN Code
+                    <span class="required">*</span>
+                  </label>
+
+                  <input
+                    type="text"
+                    id="pincode"
+                    placeholder="6-digit PIN code"
+                    maxlength="6"
+                    inputmode="numeric"
+                    autocomplete="postal-code"
+                  >
+
+                  <span class="error-message">
+                    Enter a valid 6-digit PIN code.
+                  </span>
+                </div>
+
+                <div class="checkout-input-group full-width">
+                  <label for="orderNote">
+                    Delivery Instructions
+                  </label>
+
+                  <textarea
+                    id="orderNote"
+                    placeholder="Any special delivery instructions (optional)"
+                  ></textarea>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Payment Method -->
+
+            <div class="checkout-section">
+
+              <div class="checkout-section-title">
+                <span class="checkout-section-number">3</span>
+                <h2>Payment Method</h2>
+              </div>
+
+              <div class="payment-options">
+
+                <!-- Cash on Delivery -->
+
+                <div class="payment-option">
+
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    id="cashPayment"
+                    value="Cash on Delivery"
+                    checked
+                    onchange="updatePaymentDisplay()"
+                  >
+
+                  <label for="cashPayment">
+
+                    <span class="payment-icon">
+                      💵
+                    </span>
+
+                    <span class="payment-information">
+                      <strong>Cash on Delivery</strong>
+                      <span>Pay when your order arrives</span>
+                    </span>
+
+                  </label>
+
+                </div>
+
+                <!-- UPI Payment -->
+
+                <div class="payment-option">
+
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    id="upiPayment"
+                    value="UPI"
+                    onchange="updatePaymentDisplay()"
+                  >
+
+                  <label for="upiPayment">
+
+                    <span class="payment-icon">
+                      📱
+                    </span>
+
+                    <span class="payment-information">
+                      <strong>UPI Payment</strong>
+                      <span>Google Pay, PhonePe, Paytm or BHIM</span>
+                    </span>
+
+                  </label>
+
+                  <div
+                    class="upi-box"
+                    id="upiBox"
+                    aria-hidden="true"
+                  >
+
+                    <div
+                      class="checkout-input-group"
+                      id="upiGroup"
+                    >
+                      <label for="upiId">
+                        UPI ID
+                        <span class="required">*</span>
+                      </label>
+
+                      <input
+                        type="text"
+                        id="upiId"
+                        placeholder="example@upi"
+                        autocomplete="off"
+                        inputmode="email"
+                        disabled
+                      >
+
+                      <span class="error-message">
+                        Enter a valid UPI ID, for example name@upi.
+                      </span>
+
+                    </div>
+
+                    <p class="upi-help">
+                      Enter the UPI ID connected with your payment app.
+                    </p>
+
+                    <div class="upi-examples">
+                      Examples:
+                      <strong>user@ybl</strong>,
+                      <strong>9876543210@paytm</strong>,
+                      <strong>name@okaxis</strong>
+                    </div>
+
+                    <p class="payment-note">
+                      This is a demo checkout. No real money will be
+                      transferred and your UPI ID will not be stored.
+                    </p>
+
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
+          </form>
+
+        </section>
+
+        <!-- Order Summary -->
+
+        <aside class="order-summary">
+
+          <h2>
+            Order Summary
+            (<span id="checkoutItemCount">0</span>)
+          </h2>
+
+          <div
+            class="checkout-products"
+            id="checkoutProducts"
+          ></div>
+
+          <div class="coupon-box">
+
+            <h3>Have a coupon?</h3>
+
+            <p>
+              Use WELCOME47 for 20% off or FREESHIP for free delivery.
+            </p>
+
+            <div class="coupon-input-row">
+
+              <input
+                type="text"
+                id="couponInput"
+                placeholder="Enter coupon code"
+                maxlength="20"
+                autocomplete="off"
+              >
+
+              <button
+                type="button"
+                class="apply-coupon-button"
+                id="applyCouponButton"
+              >
+                Apply
+              </button>
+
+            </div>
+
+            <div
+              class="coupon-message"
+              id="couponMessage"
+            ></div>
+
+            <div
+              class="applied-coupon"
+              id="appliedCoupon"
+            >
+
+              <span id="appliedCouponText"></span>
+
+              <button
+                type="button"
+                class="remove-coupon-button"
+                id="removeCouponButton"
+              >
+                Remove
+              </button>
+
+            </div>
+
+          </div>
+
+          <div class="summary-row">
+            <span>Subtotal</span>
+
+            <strong>
+              ₹<span id="checkoutSubtotal">0</span>
+            </strong>
+          </div>
+
+          <div
+            class="summary-row discount-row"
+            id="discountRow"
+          >
+            <span>Coupon Discount</span>
+
+            <strong>
+              -₹<span id="checkoutDiscount">0</span>
+            </strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Delivery</span>
+            <strong id="checkoutDelivery">₹0</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>GST (5%)</span>
+
+            <strong>
+              ₹<span id="checkoutGst">0</span>
+            </strong>
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <div class="summary-row grand-total">
+            <span>Total</span>
+
+            <span>
+              ₹<span id="checkoutTotal">0</span>
+            </span>
+          </div>
+
+          <button
+            type="button"
+            class="place-order-button"
+            id="placeOrderButton"
+          >
+            Place Order Securely
+          </button>
+
+          <p class="secure-text">
+            🔒 Safe and secure demo checkout.<br>
+            Your UPI ID is never stored.
+          </p>
+
+          <a
+            href="cart.html"
+            class="back-cart-button"
+          >
+            ← Back to Cart
+          </a>
+
+        </aside>
+
+      </div>
+
+    </div>
+
+    <!-- Success Screen -->
+
+    <section
+      class="order-success"
+      id="orderSuccess"
+    >
+
+      <div class="success-icon">
+        ✓
+      </div>
+
+      <h1>Thank You for Your Order!</h1>
+
+      <p>
+        Your order has been placed successfully.
+      </p>
+
+      <div class="success-details">
+
+        <div class="success-row">
+          <span>Order ID</span>
+          <strong id="successOrderId"></strong>
+        </div>
+
+        <div class="success-row">
+          <span>Payment</span>
+          <strong id="successPaymentMethod"></strong>
+        </div>
+
+        <div class="success-row">
+          <span>Total Amount</span>
+
+          <strong>
+            ₹<span id="successOrderTotal"></span>
+          </strong>
+        </div>
+
+        <div class="success-row">
+          <span>Status</span>
+
+          <strong style="color: #16a34a;">
+            Order Placed
+          </strong>
+        </div>
+
+      </div>
+
+      <div class="success-actions">
+
+        <a
+          href="index.html"
+          class="continue-shopping"
+        >
+          Continue Shopping
+        </a>
+
+        <a
+          href="my_orders.html"
+          class="view-orders"
+        >
+          View My Orders
+        </a>
+
+        <a
+          href="track_order.html"
+          class="track-order"
+          id="trackOrderButton"
+        >
+          🚚 Track Order
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <script>
+    "use strict";
+
+    const CART_STORAGE_KEY = "cart";
+    const ORDERS_STORAGE_KEY = "orders";
+    const LAST_ORDER_STORAGE_KEY = "lastOrder";
+    const USER_STORAGE_KEYS = ["user", "eliteUser"];
+    const LOGIN_REDIRECT_STORAGE_KEY = "eliteLoginRedirect";
+
+    const COUPONS = {
+      WELCOME47: {
+        code: "WELCOME47",
+        type: "percentage",
+        value: 20,
+        label: "20% discount applied"
+      },
+
+      FREESHIP: {
+        code: "FREESHIP",
+        type: "freeShipping",
+        value: 0,
+        label: "Free delivery applied"
+      }
+    };
+
+    let checkoutCart = [];
+    let appliedCoupon = null;
+
+    let orderSubtotal = 0;
+    let orderDiscount = 0;
+    let orderDeliveryCharge = 0;
+    let orderGst = 0;
+    let orderTotal = 0;
+
+    let orderIsBeingPlaced = false;
+
+
+    /* ===============================
+       STORAGE FUNCTIONS
+    ================================ */
+
+    function readStorageArray(key) {
+      try {
+        const value = JSON.parse(
+          localStorage.getItem(key)
+        );
+
+        return Array.isArray(value)
+          ? value
+          : [];
+      } catch (error) {
+        console.error(
+          `Unable to read ${key}:`,
+          error
+        );
+
+        return [];
+      }
+    }
+
+    function loadCheckoutCart() {
+      return readStorageArray(
+        CART_STORAGE_KEY
+      )
+        .filter(
+          item =>
+            item &&
+            item.id !== undefined &&
+            item.id !== null
+        )
+        .map(item => {
+          const quantity = Math.max(
+            1,
+            Number(
+              item.qty ??
+              item.quantity
+            ) || 1
+          );
+
+          return {
+            ...item,
+            id: String(item.id),
+            name: String(
+              item.name ||
+              "Product"
+            ),
+            category: String(
+              item.category ||
+              "Product"
+            ),
+            image: String(
+              item.image ||
+              ""
+            ),
+            price: Math.max(
+              0,
+              Number(item.price) || 0
+            ),
+            qty: quantity,
+            quantity: quantity
+          };
+        });
+    }
+
+
+    /* ===============================
+       COMMON FUNCTIONS
+    ================================ */
+
+    function formatPrice(value) {
+      return Number(value || 0)
+        .toLocaleString("en-IN", {
+          maximumFractionDigits: 2
+        });
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function getFieldValue(id) {
+      const field =
+        document.getElementById(id);
+
+      return field
+        ? field.value.trim()
+        : "";
+    }
+
+    function setInvalid(
+      groupId,
+      invalid
+    ) {
+      const group =
+        document.getElementById(
+          groupId
+        );
+
+      if (group) {
+        group.classList.toggle(
+          "invalid",
+          Boolean(invalid)
+        );
+      }
+    }
+
+
+    /* ===============================
+       TOTAL CALCULATION
+    ================================ */
+
+    function calculateOrderTotals() {
+      orderSubtotal =
+        checkoutCart.reduce(
+          (total, item) =>
+            total +
+            item.price * item.qty,
+          0
+        );
+
+      orderDiscount = 0;
+
+      if (
+        appliedCoupon?.type ===
+        "percentage"
+      ) {
+        orderDiscount =
+          orderSubtotal *
+          (
+            appliedCoupon.value /
+            100
+          );
+      }
+
+      orderDiscount =
+        Math.round(
+          orderDiscount * 100
+        ) / 100;
+
+      const discountedSubtotal =
+        Math.max(
+          0,
+          orderSubtotal -
+          orderDiscount
+        );
+
+      const standardDeliveryCharge =
+        orderSubtotal >= 3000
+          ? 0
+          : 99;
+
+      orderDeliveryCharge =
+        appliedCoupon?.type ===
+        "freeShipping"
+          ? 0
+          : standardDeliveryCharge;
+
+      orderGst =
+        Math.round(
+          discountedSubtotal *
+          0.05 *
+          100
+        ) / 100;
+
+      orderTotal =
+        discountedSubtotal +
+        orderGst +
+        orderDeliveryCharge;
+
+      orderTotal =
+        Math.round(
+          orderTotal * 100
+        ) / 100;
+    }
+
+    function updateOrderSummary() {
+      calculateOrderTotals();
+
+      const subtotalElement =
+        document.getElementById(
+          "checkoutSubtotal"
+        );
+
+      const discountElement =
+        document.getElementById(
+          "checkoutDiscount"
+        );
+
+      const discountRow =
+        document.getElementById(
+          "discountRow"
+        );
+
+      const deliveryElement =
+        document.getElementById(
+          "checkoutDelivery"
+        );
+
+      const gstElement =
+        document.getElementById(
+          "checkoutGst"
+        );
+
+      const totalElement =
+        document.getElementById(
+          "checkoutTotal"
+        );
+
+      if (subtotalElement) {
+        subtotalElement.textContent =
+          formatPrice(orderSubtotal);
+      }
+
+      if (discountElement) {
+        discountElement.textContent =
+          formatPrice(orderDiscount);
+      }
+
+      if (discountRow) {
+        discountRow.classList.toggle(
+          "active",
+          orderDiscount > 0
+        );
+      }
+
+      if (deliveryElement) {
+        deliveryElement.textContent =
+          orderDeliveryCharge === 0
+            ? "FREE"
+            : `₹${formatPrice(
+                orderDeliveryCharge
+              )}`;
+
+        deliveryElement.classList.toggle(
+          "free-delivery",
+          orderDeliveryCharge === 0
+        );
+      }
+
+      if (gstElement) {
+        gstElement.textContent =
+          formatPrice(orderGst);
+      }
+
+      if (totalElement) {
+        totalElement.textContent =
+          formatPrice(orderTotal);
+      }
+    }
+
+
+    /* ===============================
+       COUPON FUNCTIONS
+    ================================ */
+
+    function showCouponMessage(
+      message,
+      type
+    ) {
+      const messageBox =
+        document.getElementById(
+          "couponMessage"
+        );
+
+      if (!messageBox) {
+        return;
+      }
+
+      messageBox.textContent =
+        message;
+
+      messageBox.className =
+        `coupon-message ${type}`;
+    }
+
+    function clearCouponMessage() {
+      const messageBox =
+        document.getElementById(
+          "couponMessage"
+        );
+
+      if (!messageBox) {
+        return;
+      }
+
+      messageBox.textContent = "";
+      messageBox.className =
+        "coupon-message";
+    }
+
+    function updateAppliedCouponDisplay() {
+      const appliedBox =
+        document.getElementById(
+          "appliedCoupon"
+        );
+
+      const appliedText =
+        document.getElementById(
+          "appliedCouponText"
+        );
+
+      const couponInput =
+        document.getElementById(
+          "couponInput"
+        );
+
+      if (
+        !appliedBox ||
+        !appliedText
+      ) {
+        return;
+      }
+
+      if (!appliedCoupon) {
+        appliedBox.classList.remove(
+          "active"
+        );
+
+        appliedText.textContent = "";
+        return;
+      }
+
+      appliedText.textContent =
+        `${appliedCoupon.code} — ${appliedCoupon.label}`;
+
+      appliedBox.classList.add(
+        "active"
+      );
+
+      if (couponInput) {
+        couponInput.value =
+          appliedCoupon.code;
+      }
+    }
+
+    function applyCoupon() {
+      const couponInput =
+        document.getElementById(
+          "couponInput"
+        );
+
+      const enteredCode =
+        couponInput
+          ? couponInput.value
+              .trim()
+              .toUpperCase()
+          : "";
+
+      if (!enteredCode) {
+        showCouponMessage(
+          "Please enter a coupon code.",
+          "error"
+        );
+
+        return;
+      }
+
+      const coupon =
+        COUPONS[enteredCode];
+
+      if (!coupon) {
+        appliedCoupon = null;
+
+        updateAppliedCouponDisplay();
+        updateOrderSummary();
+
+        showCouponMessage(
+          "Invalid coupon code.",
+          "error"
+        );
+
+        return;
+      }
+
+      appliedCoupon = {
+        ...coupon
+      };
+
+      updateAppliedCouponDisplay();
+      updateOrderSummary();
+
+      showCouponMessage(
+        `${coupon.code} applied successfully.`,
+        "success"
+      );
+    }
+
+    function removeCoupon() {
+      const couponInput =
+        document.getElementById(
+          "couponInput"
+        );
+
+      appliedCoupon = null;
+
+      if (couponInput) {
+        couponInput.value = "";
+      }
+
+      updateAppliedCouponDisplay();
+      updateOrderSummary();
+
+      showCouponMessage(
+        "Coupon removed.",
+        "success"
+      );
+    }
+
+
+    /* ===============================
+       CHECKOUT PRODUCTS
+    ================================ */
+
+    function showEmptyCheckout() {
+      const checkoutContainer =
+        document.getElementById(
+          "checkoutContainer"
+        );
+
+      if (!checkoutContainer) {
+        return;
+      }
+
+      checkoutContainer.innerHTML = `
+        <section class="empty-checkout">
+
+          <div class="empty-checkout-icon">
+            🛒
+          </div>
+
+          <h2>Your cart is empty</h2>
+
+          <p>
+            Add some products before
+            proceeding to checkout.
+          </p>
+
+          <a href="index.html">
+            Start Shopping
+          </a>
+
+        </section>
+      `;
+    }
+
+    function displayCheckout() {
+      const productsBox =
+        document.getElementById(
+          "checkoutProducts"
+        );
+
+      if (
+        checkoutCart.length === 0
+      ) {
+        showEmptyCheckout();
+        return false;
+      }
+
+      if (!productsBox) {
+        return false;
+      }
+
+      const fallbackImage =
+        "./Website-images/no-image.png";
+
+      let totalQuantity = 0;
+
+      productsBox.innerHTML =
+        checkoutCart
+          .map(item => {
+            totalQuantity +=
+              item.qty;
+
+            return `
+              <article class="checkout-product">
+
+                <div class="checkout-product-image">
+
+                  <img
+                    src="${escapeHtml(
+                      item.image ||
+                      fallbackImage
+                    )}"
+                    alt="${escapeHtml(
+                      item.name
+                    )}"
+                    onerror="
+                      this.onerror = null;
+                      this.src = '${fallbackImage}';
+                    "
+                  >
+
+                </div>
+
+                <div class="checkout-product-details">
+
+                  <h3
+                    title="${escapeHtml(
+                      item.name
+                    )}"
+                  >
+                    ${escapeHtml(
+                      item.name
+                    )}
+                  </h3>
+
+                  <p>
+                    Quantity: ${item.qty}
+                  </p>
+
+                </div>
+
+                <div class="checkout-product-price">
+                  ₹${formatPrice(
+                    item.price *
+                    item.qty
+                  )}
+                </div>
+
+              </article>
+            `;
+          })
+          .join("");
+
+      const itemCount =
+        document.getElementById(
+          "checkoutItemCount"
+        );
+
+      if (itemCount) {
+        itemCount.textContent =
+          totalQuantity;
+      }
+
+      updateOrderSummary();
+
+      return true;
+    }
+
+
+    /* ===============================
+       CUSTOMER VALIDATION
+    ================================ */
+
+    function validateCustomerDetails() {
+      const fullName =
+        getFieldValue("fullName");
+
+      const mobile =
+        getFieldValue("mobile")
+          .replace(/\D/g, "");
+
+      const email =
+        getFieldValue("email");
+
+      const address =
+        getFieldValue("address");
+
+      const city =
+        getFieldValue("city");
+
+      const pincode =
+        getFieldValue("pincode");
+
+      const nameValid =
+        fullName.length >= 3;
+
+      const mobileValid =
+        /^[6-9]\d{9}$/.test(
+          mobile
+        );
+
+      const emailValid =
+        email === "" ||
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+          .test(email);
+
+      const addressValid =
+        address.length >= 10;
+
+      const cityValid =
+        city.length >= 2;
+
+      const pincodeValid =
+        /^\d{6}$/.test(
+          pincode
+        );
+
+      setInvalid(
+        "fullNameGroup",
+        !nameValid
+      );
+
+      setInvalid(
+        "mobileGroup",
+        !mobileValid
+      );
+
+      setInvalid(
+        "emailGroup",
+        !emailValid
+      );
+
+      setInvalid(
+        "addressGroup",
+        !addressValid
+      );
+
+      setInvalid(
+        "cityGroup",
+        !cityValid
+      );
+
+      setInvalid(
+        "pincodeGroup",
+        !pincodeValid
+      );
+
+      return (
+        nameValid &&
+        mobileValid &&
+        emailValid &&
+        addressValid &&
+        cityValid &&
+        pincodeValid
+      );
+    }
+
+
+    /* ===============================
+       UPI PAYMENT FUNCTIONS
+    ================================ */
+
+    function getPaymentMethod() {
+      const selectedPayment =
+        document.querySelector(
+          'input[name="paymentMethod"]:checked'
+        );
+
+      return selectedPayment
+        ? selectedPayment.value
+        : "Cash on Delivery";
+    }
+
+    function updatePaymentDisplay() {
+      const upiPayment =
+        document.getElementById(
+          "upiPayment"
+        );
+
+      const upiBox =
+        document.getElementById(
+          "upiBox"
+        );
+
+      const upiId =
+        document.getElementById(
+          "upiId"
+        );
+
+      if (
+        !upiPayment ||
+        !upiBox ||
+        !upiId
+      ) {
+        return;
+      }
+
+      const isUpiSelected =
+        upiPayment.checked;
+
+      upiBox.classList.toggle(
+        "active",
+        isUpiSelected
+      );
+
+      upiBox.setAttribute(
+        "aria-hidden",
+        String(!isUpiSelected)
+      );
+
+      upiId.disabled =
+        !isUpiSelected;
+
+      upiId.required =
+        isUpiSelected;
+
+      if (isUpiSelected) {
+        window.setTimeout(() => {
+          upiId.focus();
+        }, 120);
+      } else {
+        upiId.value = "";
+
+        setInvalid(
+          "upiGroup",
+          false
+        );
+      }
+    }
+
+    function validatePaymentMethod() {
+      const paymentMethod =
+        getPaymentMethod();
+
+      if (
+        paymentMethod !== "UPI"
+      ) {
+        setInvalid(
+          "upiGroup",
+          false
+        );
+
+        return true;
+      }
+
+      const upiId =
+        getFieldValue("upiId")
+          .replace(/\s/g, "");
+
+      const upiPattern =
+        /^[a-zA-Z0-9][a-zA-Z0-9._-]{1,255}@[a-zA-Z0-9][a-zA-Z0-9.-]{1,63}$/;
+
+      const upiValid =
+        upiPattern.test(upiId);
+
+      setInvalid(
+        "upiGroup",
+        !upiValid
+      );
+
+      return upiValid;
+    }
+
+
+    /* ===============================
+       ORDER FUNCTIONS
+    ================================ */
+
+    function scrollToFirstInvalidField() {
+      const firstInvalid =
+        document.querySelector(
+          ".checkout-input-group.invalid input, " +
+          ".checkout-input-group.invalid textarea"
+        );
+
+      if (firstInvalid) {
+        firstInvalid.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+
+        firstInvalid.focus();
+      }
+    }
+
+    function generateOrderId() {
+      const timestamp =
+        Date.now()
+          .toString()
+          .slice(-8);
+
+      const randomNumber =
+        Math.floor(
+          1000 +
+          Math.random() * 9000
+        );
+
+      return (
+        `ELITE-${timestamp}-${randomNumber}`
+      );
+    }
+
+    function getLoggedInUser() {
+      for (const storageKey of USER_STORAGE_KEYS) {
+        try {
+          const storedValue =
+            localStorage.getItem(
+              storageKey
+            );
+
+          if (!storedValue) {
+            continue;
+          }
+
+          const user =
+            JSON.parse(storedValue);
+
+          if (
+            user &&
+            typeof user === "object" &&
+            !Array.isArray(user)
+          ) {
+            return user;
+          }
+        } catch (error) {
+          console.warn(
+            `Unable to read logged-in user from ${storageKey}:`,
+            error
+          );
+        }
+      }
+
+      return null;
+    }
+
+    function normalizeUserEmail(value) {
+      return String(value || "")
+        .trim()
+        .toLowerCase();
+    }
+
+    function getLoggedInUserId(user) {
+      if (!user) {
+        return "";
+      }
+
+      return String(
+        user.id ??
+        user.userId ??
+        user.user_id ??
+        ""
+      ).trim();
+    }
+
+    function getLoggedInUserKey(user) {
+      if (!user) {
+        return "";
+      }
+
+      const userId =
+        getLoggedInUserId(user);
+
+      if (userId) {
+        return `id:${userId}`;
+      }
+
+      const userEmail =
+        normalizeUserEmail(
+          user.email
+        );
+
+      if (userEmail) {
+        return `email:${userEmail}`;
+      }
+
+      return "";
+    }
+
+    function isUserLoggedIn() {
+      const user =
+        getLoggedInUser();
+
+      return Boolean(
+        user &&
+        getLoggedInUserKey(user)
+      );
+    }
+
+    function redirectUserToLogin() {
+      localStorage.setItem(
+        LOGIN_REDIRECT_STORAGE_KEY,
+        "checkout.html"
+      );
+
+      sessionStorage.setItem(
+        LOGIN_REDIRECT_STORAGE_KEY,
+        "checkout.html"
+      );
+
+      alert(
+        "Please login first to continue checkout."
+      );
+
+      window.location.replace(
+        "login.html"
+      );
+    }
+
+    function buildOrder() {
+      const loggedInUser =
+        getLoggedInUser();
+
+      const userKey =
+        getLoggedInUserKey(
+          loggedInUser
+        );
+
+      if (
+        !loggedInUser ||
+        !userKey
+      ) {
+        throw new Error(
+          "Please login before placing an order."
+        );
+      }
+
+      const userId =
+        getLoggedInUserId(
+          loggedInUser
+        );
+
+      const userEmail =
+        normalizeUserEmail(
+          loggedInUser.email
+        );
+
+      const orderId =
+        generateOrderId();
+
+      const orderDate =
+        new Date();
+
+      const paymentMethod =
+        getPaymentMethod();
+
+      const customerEmail =
+        normalizeUserEmail(
+          getFieldValue("email") ||
+          userEmail
+        );
+
+      const customer = {
+        fullName:
+          getFieldValue("fullName"),
+
+        name:
+          getFieldValue("fullName"),
+
+        mobile:
+          getFieldValue("mobile")
+            .replace(/\D/g, ""),
+
+        phone:
+          getFieldValue("mobile")
+            .replace(/\D/g, ""),
+
+        email:
+          customerEmail,
+
+        address:
+          getFieldValue("address"),
+
+        city:
+          getFieldValue("city"),
+
+        pincode:
+          getFieldValue("pincode")
+      };
+
+      const items =
+        checkoutCart.map(item => ({
+          ...item,
+
+          id:
+            item.id,
+
+          productId:
+            item.id,
+
+          qty:
+            item.qty,
+
+          quantity:
+            item.qty,
+
+          itemTotal:
+            Math.round(
+              item.price *
+              item.qty *
+              100
+            ) / 100
+        }));
+
+      return {
+        id:
+          orderId,
+
+        orderId:
+          orderId,
+
+        order_id:
+          orderId,
+
+        userId:
+          userId,
+
+        user_id:
+          userId,
+
+        userEmail:
+          userEmail,
+
+        accountEmail:
+          userEmail,
+
+        userKey:
+          userKey,
+
+        user: {
+          id:
+            userId,
+
+          name:
+            loggedInUser.name ||
+            loggedInUser.fullName ||
+            "",
+
+          email:
+            userEmail,
+
+          key:
+            userKey
+        },
+
+        orderDate:
+          orderDate.toISOString(),
+
+        date:
+          orderDate.toISOString(),
+
+        createdAt:
+          orderDate.toISOString(),
+
+        displayDate:
+          orderDate.toLocaleString(
+            "en-IN"
+          ),
+
+        customer:
+          customer,
+
+        customerName:
+          customer.fullName,
+
+        mobile:
+          customer.mobile,
+
+        email:
+          customer.email ||
+          userEmail,
+
+        address:
+          customer.address,
+
+        city:
+          customer.city,
+
+        pincode:
+          customer.pincode,
+
+        deliveryAddress:
+          `${customer.address}, ${customer.city} - ${customer.pincode}`,
+
+        deliveryNote:
+          getFieldValue(
+            "orderNote"
+          ),
+
+        paymentMethod:
+          paymentMethod,
+
+        payment:
+          paymentMethod,
+
+        paymentStatus:
+          paymentMethod === "UPI"
+            ? "UPI Selected - Demo"
+            : "Pay on Delivery",
+
+        items:
+          items,
+
+        products:
+          items,
+
+        subtotal:
+          orderSubtotal,
+
+        discount:
+          orderDiscount,
+
+        couponCode:
+          appliedCoupon?.code ||
+          "",
+
+        coupon:
+          appliedCoupon
+            ? {
+                ...appliedCoupon
+              }
+            : null,
+
+        gst:
+          orderGst,
+
+        deliveryCharge:
+          orderDeliveryCharge,
+
+        total:
+          orderTotal,
+
+        totalAmount:
+          orderTotal,
+
+        status:
+          "Order Placed"
+      };
+    }
+
+    function saveOrder(order) {
+      const orders =
+        readStorageArray(
+          ORDERS_STORAGE_KEY
+        );
+
+      orders.unshift(order);
+
+      localStorage.setItem(
+        ORDERS_STORAGE_KEY,
+        JSON.stringify(orders)
+      );
+
+      localStorage.setItem(
+        LAST_ORDER_STORAGE_KEY,
+        JSON.stringify(order)
+      );
+
+      if (order.userKey) {
+        localStorage.setItem(
+          `${LAST_ORDER_STORAGE_KEY}:${order.userKey}`,
+          JSON.stringify(order)
+        );
+      }
+
+      localStorage.setItem(
+        CART_STORAGE_KEY,
+        JSON.stringify([])
+      );
+    }
+
+    function setPlaceOrderButtonLoading(
+      loading
+    ) {
+      const button =
+        document.getElementById(
+          "placeOrderButton"
+        );
+
+      if (!button) {
+        return;
+      }
+
+      button.disabled =
+        loading;
+
+      button.textContent =
+        loading
+          ? "Placing Order..."
+          : "Place Order Securely";
+    }
+
+    function placeCheckoutOrder() {
+      if (!isUserLoggedIn()) {
+        redirectUserToLogin();
+        return;
+      }
+
+      if (orderIsBeingPlaced) {
+        return;
+      }
+
+      checkoutCart =
+        loadCheckoutCart();
+
+      if (
+        checkoutCart.length === 0
+      ) {
+        alert(
+          "Your cart is empty. Please add a product first."
+        );
+
+        showEmptyCheckout();
+        return;
+      }
+
+      updateOrderSummary();
+
+      const customerValid =
+        validateCustomerDetails();
+
+      const paymentValid =
+        validatePaymentMethod();
+
+      if (
+        !customerValid ||
+        !paymentValid
+      ) {
+        if (!paymentValid) {
+          alert(
+            "Please enter a valid UPI ID, for example name@upi."
+          );
+        } else {
+          alert(
+            "Please check the highlighted fields."
+          );
+        }
+
+        scrollToFirstInvalidField();
+        return;
+      }
+
+      orderIsBeingPlaced = true;
+
+      setPlaceOrderButtonLoading(
+        true
+      );
+
+      try {
+        const order =
+          buildOrder();
+
+        saveOrder(order);
+
+        checkoutCart = [];
+
+        const upiField =
+          document.getElementById(
+            "upiId"
+          );
+
+        if (upiField) {
+          upiField.value = "";
+        }
+
+        showOrderSuccess(order);
+      } catch (error) {
+        console.error(
+          "Unable to place order:",
+          error
+        );
+
+        alert(
+          "Order could not be placed. Please try again."
+        );
+
+        orderIsBeingPlaced =
+          false;
+
+        setPlaceOrderButtonLoading(
+          false
+        );
+      }
+    }
+
+    function showOrderSuccess(order) {
+      const checkoutContainer =
+        document.getElementById(
+          "checkoutContainer"
+        );
+
+      const orderSuccess =
+        document.getElementById(
+          "orderSuccess"
+        );
+
+      if (checkoutContainer) {
+        checkoutContainer.style.display =
+          "none";
+      }
+
+      const successOrderId =
+        document.getElementById(
+          "successOrderId"
+        );
+
+      const successPaymentMethod =
+        document.getElementById(
+          "successPaymentMethod"
+        );
+
+      const successOrderTotal =
+        document.getElementById(
+          "successOrderTotal"
+        );
+
+      if (successOrderId) {
+        successOrderId.textContent =
+          order.orderId;
+      }
+
+      if (successPaymentMethod) {
+        successPaymentMethod.textContent =
+          order.paymentMethod;
+      }
+
+      if (successOrderTotal) {
+        successOrderTotal.textContent =
+          formatPrice(
+            order.total
+          );
+      }
+
+      const trackOrderButton =
+        document.getElementById(
+          "trackOrderButton"
+        );
+
+      if (trackOrderButton) {
+        trackOrderButton.href =
+          `track_order.html?order=${encodeURIComponent(
+            order.orderId
+          )}`;
+      }
+
+      if (orderSuccess) {
+        orderSuccess.style.display =
+          "block";
+      }
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+
+
+    /* ===============================
+       INPUT FUNCTIONS
+    ================================ */
+
+    function allowOnlyDigits(
+      field,
+      maximumLength
+    ) {
+      field.value =
+        field.value
+          .replace(/\D/g, "")
+          .slice(
+            0,
+            maximumLength
+          );
+    }
+
+    function clearFieldError(event) {
+      const group =
+        event.target.closest(
+          ".checkout-input-group"
+        );
+
+      if (group) {
+        group.classList.remove(
+          "invalid"
+        );
+      }
+    }
+
+    function prefillCustomerDetails() {
+      const user =
+        getLoggedInUser();
+
+      if (!user) {
+        return;
+      }
+
+      const fullName =
+        document.getElementById(
+          "fullName"
+        );
+
+      const email =
+        document.getElementById(
+          "email"
+        );
+
+      if (
+        fullName &&
+        !fullName.value
+      ) {
+        fullName.value =
+          user.name ||
+          user.fullName ||
+          "";
+      }
+
+      if (email) {
+        const accountEmail =
+          normalizeUserEmail(
+            user.email
+          );
+
+        if (accountEmail) {
+          email.value =
+            accountEmail;
+
+          email.readOnly =
+            true;
+
+          email.title =
+            "This order will be connected to your logged-in account.";
+        }
+      }
+    }
+
+
+    /* ===============================
+       INITIALIZATION
+    ================================ */
+
+    function initializeCheckout() {
+      if (!isUserLoggedIn()) {
+        redirectUserToLogin();
+        return;
+      }
+
+      checkoutCart =
+        loadCheckoutCart();
+
+      if (!displayCheckout()) {
+        return;
+      }
+
+      prefillCustomerDetails();
+      updatePaymentDisplay();
+
+      const checkoutForm =
+        document.getElementById(
+          "checkoutForm"
+        );
+
+      const placeOrderButton =
+        document.getElementById(
+          "placeOrderButton"
+        );
+
+      const mobileInput =
+        document.getElementById(
+          "mobile"
+        );
+
+      const pincodeInput =
+        document.getElementById(
+          "pincode"
+        );
+
+      const upiInput =
+        document.getElementById(
+          "upiId"
+        );
+
+      const couponInput =
+        document.getElementById(
+          "couponInput"
+        );
+
+      const applyCouponButton =
+        document.getElementById(
+          "applyCouponButton"
+        );
+
+      const removeCouponButton =
+        document.getElementById(
+          "removeCouponButton"
+        );
+
+      if (checkoutForm) {
+        checkoutForm.addEventListener(
+          "submit",
+          event => {
+            event.preventDefault();
+            placeCheckoutOrder();
+          }
+        );
+
+        checkoutForm
+          .querySelectorAll(
+            "input, textarea"
+          )
+          .forEach(field => {
+            field.addEventListener(
+              "input",
+              clearFieldError
+            );
+          });
+      }
+
+      if (placeOrderButton) {
+        placeOrderButton.addEventListener(
+          "click",
+          placeCheckoutOrder
+        );
+      }
+
+      if (mobileInput) {
+        mobileInput.addEventListener(
+          "input",
+          function () {
+            allowOnlyDigits(
+              this,
+              10
+            );
+          }
+        );
+      }
+
+      if (pincodeInput) {
+        pincodeInput.addEventListener(
+          "input",
+          function () {
+            allowOnlyDigits(
+              this,
+              6
+            );
+          }
+        );
+      }
+
+      if (upiInput) {
+        upiInput.addEventListener(
+          "input",
+          function () {
+            this.value =
+              this.value
+                .replace(/\s/g, "");
+
+            setInvalid(
+              "upiGroup",
+              false
+            );
+          }
+        );
+      }
+
+      if (applyCouponButton) {
+        applyCouponButton.addEventListener(
+          "click",
+          applyCoupon
+        );
+      }
+
+      if (removeCouponButton) {
+        removeCouponButton.addEventListener(
+          "click",
+          removeCoupon
+        );
+      }
+
+      if (couponInput) {
+        couponInput.addEventListener(
+          "input",
+          function () {
+            this.value =
+              this.value
+                .toUpperCase()
+                .replace(/\s/g, "");
+
+            clearCouponMessage();
+          }
+        );
+
+        couponInput.addEventListener(
+          "keydown",
+          event => {
+            if (
+              event.key === "Enter"
+            ) {
+              event.preventDefault();
+              applyCoupon();
+            }
+          }
+        );
+      }
+
+      document
+        .querySelectorAll(
+          'input[name="paymentMethod"]'
+        )
+        .forEach(input => {
+          input.addEventListener(
+            "change",
+            updatePaymentDisplay
+          );
+        });
+    }
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializeCheckout
+    );
+  </script>
+
+</body>
+
+</html>
